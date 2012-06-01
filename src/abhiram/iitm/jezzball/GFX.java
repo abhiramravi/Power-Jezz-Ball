@@ -19,11 +19,14 @@ public class GFX extends Activity
 	    jJezzThread = customView.getThread();
 	    jJezzThread.doStart();
 	}
-	@Override
-	protected void onPause() 
-	{
-		super.onPause();
-	}
+	 /**
+     * Invoked when the Activity loses user focus.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        customView.getThread().pause(); // pause game when Activity pauses
+    }
 	@Override
 	protected void onResume() 
 	{
