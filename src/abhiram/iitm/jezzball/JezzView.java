@@ -161,6 +161,11 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 				jBallX += jBallVelocityX;
 				jBallY += jBallVelocityY;
 				
+				if(jBallX > jSurfaceHolder.getSurfaceFrame().width()
+			|| jBallX < 0) jBallVelocityX *= -1;
+				if(jBallY > jSurfaceHolder.getSurfaceFrame().height()
+						||jBallY < 0) jBallVelocityY *= -1;
+				
 			}
 			
 		}
