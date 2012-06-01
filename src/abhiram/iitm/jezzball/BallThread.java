@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 
-public class BallThread extends Thread
+public class BallThread
 {
 	private float currentX;
 	private float currentY;
@@ -56,8 +56,8 @@ public class BallThread extends Thread
 			screenWidth = jSurfaceHolder.getSurfaceFrame().width();
 			screenHeight = jSurfaceHolder.getSurfaceFrame().height();
 			
-			currentX = rand.nextInt(screenWidth);
-			currentY = rand.nextInt(screenHeight);
+			currentX = rand.nextInt(100);
+			currentY = rand.nextInt(100);
 
 			// start with a little random motion
 			
@@ -68,34 +68,8 @@ public class BallThread extends Thread
 			//Make sure that the state is set to running after the dostart of all balls are called.
 		}
 	}
-	@Override
-	public void run()
-	{
-		while (JezzView.JezzThread.jRun)
-		{
-			Canvas c = null;
-			try
-			{
-				c = jSurfaceHolder.lockCanvas(null);
-				synchronized (jSurfaceHolder)
-				{
-					if (JezzView.JezzThread.jMode == JezzView.JezzThread.STATE_RUNNING)
-						updatePhysics();
-					doDraw(c);
-				}
-			} finally
-			{
-				// do this in a finally so that if an exception is thrown
-				// during the above, we don't leave the Surface in an
-				// inconsistent state
-				if (c != null)
-				{
-					jSurfaceHolder.unlockCanvasAndPost(c);
-				}
-			}
-		}
-	}
-	private void doDraw(Canvas canvas)
+
+	public void doDraw(Canvas canvas)
 	{
 		//Not Clearing the screen
 		//canvas.drawRGB(255, 255, 255);
@@ -104,7 +78,7 @@ public class BallThread extends Thread
 		canvas.drawBitmap(jBallBitmap, currentX, currentY, null);
 	}
 
-	private void updatePhysics()
+	public void updatePhysics()
 	{
 		// screen parameters
 		screenWidth = jSurfaceHolder.getSurfaceFrame().width();

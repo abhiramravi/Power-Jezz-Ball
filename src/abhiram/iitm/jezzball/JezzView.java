@@ -21,7 +21,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		 * Difficulty setting constants
 		 */
 		public static final int DIFFICULTY_EASY = 0;
-		public static final int DIFFICULTY_HARD = 1;
+		public static final int DIFFICULTY_HARD = 7;
 		public static final int DIFFICULTY_MEDIUM = 2;
 
 		/*
@@ -44,7 +44,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 
 		private Random rand;
 		/** The state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
-		private int jMode = STATE_PAUSE;
+		public int jMode = STATE_PAUSE;
 
 		public static final int INIT_X = 50;
 		public static final int INIT_Y = 50;
@@ -53,21 +53,17 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		private Bitmap jBallBitmap;
 
 		/** Indicate whether the surface has been created & is ready to draw */
-		private boolean jRun = false;
+		public boolean jRun = false;
 
 		private SurfaceHolder jSurfaceHolder;
 
-		private double jBallVelocity;
-		private double jBallVelocityX;
-		private double jBallVelocityY;
 
 		private int jDifficulty;
 
 		private int screenWidth;
 		private int screenHeight;
-
-		private float jBallX;
-		private float jBallY;
+		
+		private BallThread[] jezzBalls;
 
 		public JezzThread(SurfaceHolder surfaceHolder, Context context,
 				Handler handler)
@@ -98,22 +94,13 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			synchronized (jSurfaceHolder)
 			{
-				// First set the game for Medium difficulty
-				jDifficulty = DIFFICULTY_EASY;
-				jBallVelocity = PHYS_VEL;
-
-				// TODO : Adjust difficulty params for EASY/HARD
-
-				// initial location for the ball
-				jBallX = INIT_X;
-				jBallY = INIT_Y;
-
-				// start with a little random motion
-				rand = new Random();
-				int randDegrees = rand.nextInt(10);
-
-				jBallVelocityY = Math.cos(randDegrees) * PHYS_VEL;
-				jBallVelocityX = Math.sin(randDegrees) * PHYS_VEL;
+				jezzBalls = new BallThread[DIFFICULTY_HARD];
+				// register our interest in hearing about changes to our surface
+				for(int i = 0; i < DIFFICULTY_HARD; i++)
+				{
+					jezzBalls[i] = new BallThread(jSurfaceHolder, jContext, new Handler());
+					jezzBalls[i].doStart();
+				}
 
 				setState(STATE_RUNNING);
 			}
@@ -147,36 +134,26 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 
+		
+
 		private void doDraw(Canvas canvas)
 		{
-			// Clearing the screen
 			canvas.drawRGB(255, 255, 255);
-
-			// Draw the Ball
-			canvas.drawBitmap(jBallBitmap, jBallX, jBallY, null);
+			
+			for(int i = 0; i < DIFFICULTY_HARD; i++)
+			{
+				jezzBalls[i].doDraw(canvas);
+			}
+			
 		}
 
 		private void updatePhysics()
 		{
-			// screen parameters
-			screenWidth = jSurfaceHolder.getSurfaceFrame().width();
-			screenHeight = jSurfaceHolder.getSurfaceFrame().height();
-
-			synchronized (jSurfaceHolder)
+			for(int i = 0; i < DIFFICULTY_HARD; i++)
 			{
-				jBallX += jBallVelocityX;
-				jBallY += jBallVelocityY;
-
-				if (jBallX >= screenWidth - jBallBitmap.getWidth()
-						|| jBallX <= 0)
-					jBallVelocityX *= -1;
-				if (jBallY >= jSurfaceHolder.getSurfaceFrame().height()
-						- jBallBitmap.getHeight()
-						|| jBallY <= 0)
-					jBallVelocityY *= -1;
-
+				jezzBalls[i].updatePhysics();
 			}
-
+			
 		}
 
 		/**
@@ -235,7 +212,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 
-	private Context jContext;
+	private static Context jContext;
 	/** The thread that actually draws the animation */
 	private JezzThread thread;
 
