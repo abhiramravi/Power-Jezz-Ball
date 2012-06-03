@@ -38,9 +38,6 @@ public class Ball
 	private Context jContext;
 	
 	
-	/** The screen width and height - obtained from surfaceholder and stored */
-	private int screenWidth;
-	private int screenHeight;
 	
 	private long jLastTime;
 	
@@ -76,8 +73,8 @@ public class Ball
 			rand = new Random();
 
 			// initial random location for the ball
-			screenWidth = jSurfaceHolder.getSurfaceFrame().width();
-			screenHeight = jSurfaceHolder.getSurfaceFrame().height();
+			GameParameters.setScreenWidth(jSurfaceHolder.getSurfaceFrame().width());
+			GameParameters.setScreenHeight(jSurfaceHolder.getSurfaceFrame().height());
 			
 			currentX = rand.nextInt(100);
 			currentY = rand.nextInt(100);
@@ -108,18 +105,18 @@ public class Ball
 		
 		double elapsedTime = (now - jLastTime)/1000.0;
 		// screen parameters
-		screenWidth = jSurfaceHolder.getSurfaceFrame().width();
-		screenHeight = jSurfaceHolder.getSurfaceFrame().height();
+		GameParameters.setScreenWidth(jSurfaceHolder.getSurfaceFrame().width());
+		GameParameters.setScreenHeight(jSurfaceHolder.getSurfaceFrame().height());
 
 		synchronized (jSurfaceHolder)
 		{
 			currentX += velocityX * elapsedTime;
 			currentY += velocityY * elapsedTime;
 
-			if (currentX >= screenWidth - jBallBitmap.getWidth() && velocityX > 0) velocityX *= -1;
+			if (currentX >= GameParameters.getScreenWidth() - jBallBitmap.getWidth() && velocityX > 0) velocityX *= -1;
 			if (currentX <= 0 && velocityX < 0) velocityX *= -1;
 			if (currentY <= 0 && velocityY < 0) velocityY *= -1;
-			if (currentY >= screenHeight - jBallBitmap.getHeight() && velocityY > 0) velocityY *= -1;
+			if (currentY >= GameParameters.getScreenHeight() - jBallBitmap.getHeight() && velocityY > 0) velocityY *= -1;
 			
 			/** Setting the last time now to now  :D */
 			jLastTime = System.currentTimeMillis();

@@ -66,7 +66,8 @@ public class GFX extends Activity implements OnTouchListener
 			synchronized(GameParameters.lock)
 			{
 				GameParameters.line.add( new Line(jView.getHolder(), jView.getContext(), new Handler(), GameParameters.getUserAction(), startX, startY));
-				GameParameters.line.get(GameParameters.linesFixed).doStart();	
+				GameParameters.line.get(GameParameters.linesFixed).doStart();
+				GameParameters.linesOnScreen++;
 			}
 			
 		}

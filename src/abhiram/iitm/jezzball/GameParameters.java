@@ -39,6 +39,29 @@ public class GameParameters
 	private static double ballWidth;
 	private static double ballHeight;
 	
+	private static int screenWidth;
+	private static int screenHeight;
+	
+	public static int getScreenWidth()
+	{
+		return screenWidth;
+	}
+
+	public static void setScreenWidth(int screenWidth)
+	{
+		GameParameters.screenWidth = screenWidth;
+	}
+
+	public static int getScreenHeight()
+	{
+		return screenHeight;
+	}
+
+	public static void setScreenHeight(int screenHeight)
+	{
+		GameParameters.screenHeight = screenHeight;
+	}
+
 	public static double getBallWidth()
 	{
 		return ballWidth;
@@ -76,7 +99,7 @@ public class GameParameters
 	public static ArrayList<Line> line = new ArrayList<Line>();
 	/** The number of lines successfully completed, also indicated the number upto which the arraylist must be left unconcerned */
 	public static int linesFixed = 0;
-	
+	public static int linesOnScreen = 0;
 
 	public static int getNumberOfBalls()
 	{
@@ -97,6 +120,13 @@ public class GameParameters
 	{
 		GameParameters.userAction = userAction;
 	}
-	
+	public static void clearRecentLine()
+	{
+		synchronized(lock)
+		{
+			line.remove(line.size() - 1);
+			linesOnScreen --;
+		}
+	}
 	
 }

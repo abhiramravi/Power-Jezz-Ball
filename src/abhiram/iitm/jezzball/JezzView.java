@@ -139,7 +139,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					GameParameters.jezzBalls[i].doDraw(canvas);
 				}
-				for(int i = 0; i < GameParameters.linesFixed; i++ )
+				for(int i = 0; i < GameParameters.linesOnScreen; i++ )
 				{
 					GameParameters.line.get(i).doDraw(canvas);
 				}
@@ -154,7 +154,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					GameParameters.jezzBalls[i].updatePhysics();
 				}
-				for(int i = 0; i < GameParameters.linesFixed; i++ )
+				for(int i = 0; i < GameParameters.linesOnScreen; i++ )
 				{
 					GameParameters.line.get(i).updatePhysics();
 				}
