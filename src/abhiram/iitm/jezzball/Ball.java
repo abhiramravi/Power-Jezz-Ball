@@ -26,22 +26,6 @@ public class Ball
 	private double velocityX;
 	private double velocityY;
 
-	public double getVelocityX()
-	{
-		return velocityX;
-	}
-	public void setVelocityX(double velocityX)
-	{
-		this.velocityX = velocityX;
-	}
-	public double getVelocityY()
-	{
-		return velocityY;
-	}
-	public void setVelocityY(double velocityY)
-	{
-		this.velocityY = velocityY;
-	}
 	/** Very own random number generator */
 	private Random rand;
 
@@ -57,14 +41,6 @@ public class Ball
 	
 	private long jLastTime;
 	
-	public float getCurrentX()
-	{
-		return this.currentX;
-	}
-	public float getCurrentY()
-	{
-		return this.currentY;
-	}
 	
 	public Ball(SurfaceHolder surfaceHolder, Context context,
 			Handler handler)
@@ -164,15 +140,35 @@ public class Ball
 		}
 
 	}
-	/** Note that y2 MUST be the new y coordinate of the ball */
+	
+	/** This function retrieves a line if it exists in the between the current point of the ball and the next point of the ball
+	 * @Params : The current and next coordinates of the ball 
+	 * @return : Line if it exists/ null otherwise */
+	
 	public Line getHorizLineBetween(double y1, double y2, double x1, double x2)
 	{
 		for(int i = 0; i < GameParameters.linesOnScreen; i++)
 		{
 			Line l = GameParameters.line.get(i);
+			//If l is a horizontal line 
 			if(l.isHorizontalLine())
 			{
 				float y = l.getOriginY();
+				/* 
+				
+									BALL_INIT_CASE_1
+					Top stroke ---------------------------------------------------
+									BALL_FINAL_CASE_1 - here or below
+					Origin Line --------------------------------------------------
+															BALL_FINAL_CASE_2 - here or above
+					Bottom stroke ------------------------------------------------
+															BALL_INIT_CASE_2
+															
+					# If any one of the above two cases is true, we return the line if the line is fixed.
+					# If the line is being constructed, whether the ball(new coordinate) actually touches the line 
+					is checked, and is returned only if so
+			
+				 */
 				if( y2 > y1 )
 				{
 					if( y1 + GameParameters.getBallHeight() < y - GameParameters.LINE_STROKE_WIDTH/2 
@@ -181,6 +177,7 @@ public class Ball
 						if(l.isThisLineIsFixed()) return l;
 						else
 						{
+							//does the ball actually touch the line being constructed? 
 							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
 								return l;
 						}
@@ -193,6 +190,7 @@ public class Ball
 						if(l.isThisLineIsFixed()) return l;
 						else
 						{
+							//does the ball actually touch the line being constructed? 
 							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
 								return l;
 						}
@@ -202,13 +200,38 @@ public class Ball
 		}
 		return null;
 	}
+	
+	/** This function retrieves a line if it exists in the between the current point of the ball and the next point of the ball
+	 * @Params : The current and next coordinates of the ball 
+	 * @return : Line if it exists / null otherwise */
+	
 	public Line getVertLineBetween(double x1, double x2, double y1, double y2)
 	{
 		for(int i = 0; i < GameParameters.linesOnScreen; i++)
 		{
 			Line l = GameParameters.line.get(i);
+			//If l is a vertical line
 			if(!l.isHorizontalLine())
 			{
+				/*
+				 # View the diagram below sideways to understand the working 
+				
+								BALL_INIT_CASE_1
+				Top stroke ---------------------------------------------------
+								BALL_FINAL_CASE_1 - here or below
+				Origin Line --------------------------------------------------
+														BALL_FINAL_CASE_2 - here or above
+				Bottom stroke ------------------------------------------------
+														BALL_INIT_CASE_2
+														
+														
+				# If any one of the above two cases is true, we return the line if the line is fixed.
+				# If the line is being constructed, whether the ball(new coordinate) actually touches the line 
+				is checked, and is returned only if so
+				# similar to the horizontal line procedure, just changing x's and y's
+				*/
+				
+				
 				float x = l.getOriginX();
 				if( x2 > x1 )
 				{
@@ -248,4 +271,29 @@ public class Ball
 		else this.velocityY *= -1;
 	}
 
+	public double getVelocityX()
+	{
+		return velocityX;
+	}
+	public void setVelocityX(double velocityX)
+	{
+		this.velocityX = velocityX;
+	}
+	public double getVelocityY()
+	{
+		return velocityY;
+	}
+	public void setVelocityY(double velocityY)
+	{
+		this.velocityY = velocityY;
+	}
+	public float getCurrentX()
+	{
+		return this.currentX;
+	}
+	public float getCurrentY()
+	{
+		return this.currentY;
+	}
+	
 }

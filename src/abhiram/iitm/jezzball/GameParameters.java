@@ -42,6 +42,44 @@ public class GameParameters
 	private static int screenWidth;
 	private static int screenHeight;
 	
+
+	public static Ball[] jezzBalls;
+	private static int numberOfBalls = 3;
+	
+	/** Currently only one line TODO: Allow multiple lines */
+	public static ArrayList<Line> line = new ArrayList<Line>();
+	/** The number of lines successfully completed, also indicated the number upto which the arraylist must be left unconcerned */
+	public static int linesFixed = 0;
+	public static int linesOnScreen = 0;
+
+	public static int getNumberOfBalls()
+	{
+		return numberOfBalls;
+	}
+
+	public static void setNumberOfBalls(int numberOfBalls)
+	{
+		GameParameters.numberOfBalls = numberOfBalls;
+	}
+
+	public static boolean getUserAction()
+	{
+		return userAction;
+	}
+
+	public static void setUserAction(boolean userAction)
+	{
+		GameParameters.userAction = userAction;
+	}
+	public static void clearRecentLine()
+	{
+		synchronized(lock)
+		{
+			line.remove(line.size() - 1);
+			linesOnScreen --;
+		}
+	}
+
 	public static int getScreenWidth()
 	{
 		return screenWidth;
@@ -91,42 +129,4 @@ public class GameParameters
 	{
 		GameParameters.jBallBitmap = jBallBitmap;
 	}
-
-	public static Ball[] jezzBalls;
-	private static int numberOfBalls = 3;
-	
-	/** Currently only one line TODO: Allow multiple lines */
-	public static ArrayList<Line> line = new ArrayList<Line>();
-	/** The number of lines successfully completed, also indicated the number upto which the arraylist must be left unconcerned */
-	public static int linesFixed = 0;
-	public static int linesOnScreen = 0;
-
-	public static int getNumberOfBalls()
-	{
-		return numberOfBalls;
-	}
-
-	public static void setNumberOfBalls(int numberOfBalls)
-	{
-		GameParameters.numberOfBalls = numberOfBalls;
-	}
-
-	public static boolean getUserAction()
-	{
-		return userAction;
-	}
-
-	public static void setUserAction(boolean userAction)
-	{
-		GameParameters.userAction = userAction;
-	}
-	public static void clearRecentLine()
-	{
-		synchronized(lock)
-		{
-			line.remove(line.size() - 1);
-			linesOnScreen --;
-		}
-	}
-	
 }

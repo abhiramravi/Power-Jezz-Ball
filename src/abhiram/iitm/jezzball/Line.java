@@ -16,70 +16,7 @@ public class Line
 	/** The boolean representing if the line being drawn is a horizontal/vertical line */
 	private boolean horizontalLine;
 	
-	public boolean isHorizontalLine()
-	{
-		return horizontalLine;
-	}
-	public float getCurrentLeftX()
-	{
-		return currentLeftX;
-	}
-	public void setCurrentLeftX(float currentLeftX)
-	{
-		this.currentLeftX = currentLeftX;
-	}
-	public float getCurrentRightX()
-	{
-		return currentRightX;
-	}
-	public void setCurrentRightX(float currentRightX)
-	{
-		this.currentRightX = currentRightX;
-	}
-	public float getCurrentLeftY()
-	{
-		return currentLeftY;
-	}
-	public void setCurrentLeftY(float currentLeftY)
-	{
-		this.currentLeftY = currentLeftY;
-	}
-	public float getCurrentRightY()
-	{
-		return currentRightY;
-	}
-	public void setCurrentRightY(float currentRightY)
-	{
-		this.currentRightY = currentRightY;
-	}
-	public float getOriginX()
-	{
-		return originX;
-	}
-	public void setOriginX(float originX)
-	{
-		this.originX = originX;
-	}
-	public float getOriginY()
-	{
-		return originY;
-	}
-	public void setOriginY(float originY)
-	{
-		this.originY = originY;
-	}
-	public boolean isThisLineIsFixed()
-	{
-		return thisLineIsFixed;
-	}
-	public void setThisLineIsFixed(boolean thisLineIsFixed)
-	{
-		this.thisLineIsFixed = thisLineIsFixed;
-	}
-	public void setHorizontalLine(boolean horizontalLine)
-	{
-		this.horizontalLine = horizontalLine;
-	}
+	
 	/** The current positions of the ends of the line */
 	private float currentLeftX;
 	private float currentRightX;
@@ -101,8 +38,10 @@ public class Line
 	/** The paint variable that defines the style of the line */
 	private Paint p;
 	
+	/* This is redundant - because the line itself is destroyed on ball touch - just kept for safekeeping */
 	private boolean isNotDestroyed;
 	
+	/** boolean to determine fixature nature of the coordinates of the line */
 	private boolean currentLeftXFixed;
 	private boolean currentRightXFixed;
 	private boolean currentLeftYFixed;
@@ -211,30 +150,6 @@ public class Line
 					}
 				}
 				
-				/** For each ball, we check if it has collided with the line or not */
-				/*
-				for(int i = 0; i < GameParameters.jezzBalls.length; i++ )
-				{
-					float ballX = GameParameters.jezzBalls[i].getCurrentX();
-					float ballY = GameParameters.jezzBalls[i].getCurrentY();
-					double ballVelX = GameParameters.jezzBalls[i].getVelocityX();
-					double ballVelY = GameParameters.jezzBalls[i].getVelocityY();
-					
-					
-					if( currentLeftX < ballX + GameParameters.getBallWidth() && currentRightX > ballX )
-						if( (ballY > originY && (ballY - originY) < GameParameters.LINE_STROKE_WIDTH/2 && ballVelY < 0) 
-							|| (ballY <= originY && originY - ballY - GameParameters.getBallHeight() < GameParameters.LINE_STROKE_WIDTH/2 && ballVelY >= 0 ))
-						{
-							GameParameters.jezzBalls[i].negateVelocity(false);
-							if(!thisLineIsFixed) 
-							{
-								GameParameters.clearRecentLine();
-								isNotDestroyed = false;
-							}
-							break;
-						}
-				
-				}*/
 			}
 			else
 			{
@@ -277,28 +192,6 @@ public class Line
 						GameParameters.linesFixed ++;
 					}
 				}
-				/*
-				for(int i = 0; i < GameParameters.jezzBalls.length; i++ )
-				{
-					float ballX = GameParameters.jezzBalls[i].getCurrentX();
-					float ballY = GameParameters.jezzBalls[i].getCurrentY();
-					double ballVelX = GameParameters.jezzBalls[i].getVelocityX();
-					double ballVelY = GameParameters.jezzBalls[i].getVelocityY();
-					
-					if( currentLeftY < ballY + GameParameters.getBallHeight() && currentRightY > ballY )
-						if( (ballX > originX && (ballX - originX) < GameParameters.LINE_STROKE_WIDTH/2 && ballVelX < 0) 
-							|| (ballX <= originX && originX - ballX - GameParameters.getBallWidth() < GameParameters.LINE_STROKE_WIDTH/2 && ballVelX >= 0))
-						{
-							GameParameters.jezzBalls[i].negateVelocity(true);
-							if(!thisLineIsFixed) 
-							{
-								GameParameters.clearRecentLine();
-								isNotDestroyed = false;
-							}
-							break;
-						}
-				
-				}*/
 			}
 			
 			/** Setting the last time now to now  :D */
@@ -306,6 +199,71 @@ public class Line
 		}
 
 	}
-
-	
+	/*---------------------------------------------------*/
+	/*			OUTER ACCESS FUNCTIONS					 */
+	/*---------------------------------------------------*/
+	public boolean isHorizontalLine()
+	{
+		return horizontalLine;
+	}
+	public float getCurrentLeftX()
+	{
+		return currentLeftX;
+	}
+	public void setCurrentLeftX(float currentLeftX)
+	{
+		this.currentLeftX = currentLeftX;
+	}
+	public float getCurrentRightX()
+	{
+		return currentRightX;
+	}
+	public void setCurrentRightX(float currentRightX)
+	{
+		this.currentRightX = currentRightX;
+	}
+	public float getCurrentLeftY()
+	{
+		return currentLeftY;
+	}
+	public void setCurrentLeftY(float currentLeftY)
+	{
+		this.currentLeftY = currentLeftY;
+	}
+	public float getCurrentRightY()
+	{
+		return currentRightY;
+	}
+	public void setCurrentRightY(float currentRightY)
+	{
+		this.currentRightY = currentRightY;
+	}
+	public float getOriginX()
+	{
+		return originX;
+	}
+	public void setOriginX(float originX)
+	{
+		this.originX = originX;
+	}
+	public float getOriginY()
+	{
+		return originY;
+	}
+	public void setOriginY(float originY)
+	{
+		this.originY = originY;
+	}
+	public boolean isThisLineIsFixed()
+	{
+		return thisLineIsFixed;
+	}
+	public void setThisLineIsFixed(boolean thisLineIsFixed)
+	{
+		this.thisLineIsFixed = thisLineIsFixed;
+	}
+	public void setHorizontalLine(boolean horizontalLine)
+	{
+		this.horizontalLine = horizontalLine;
+	}
 }
