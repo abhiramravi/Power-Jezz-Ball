@@ -13,7 +13,7 @@
             android:name=".JezzBallActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name="GFX" >
+        <activity android:name="GFX"  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
