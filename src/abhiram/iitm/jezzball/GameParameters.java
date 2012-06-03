@@ -93,7 +93,7 @@ public class GameParameters
 	}
 
 	public static Ball[] jezzBalls;
-	private static int numberOfBalls = 10;
+	private static int numberOfBalls = 3;
 	
 	/** Currently only one line TODO: Allow multiple lines */
 	public static ArrayList<Line> line = new ArrayList<Line>();

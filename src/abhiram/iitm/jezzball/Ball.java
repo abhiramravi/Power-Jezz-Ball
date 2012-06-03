@@ -26,6 +26,22 @@ public class Ball
 	private double velocityX;
 	private double velocityY;
 
+	public double getVelocityX()
+	{
+		return velocityX;
+	}
+	public void setVelocityX(double velocityX)
+	{
+		this.velocityX = velocityX;
+	}
+	public double getVelocityY()
+	{
+		return velocityY;
+	}
+	public void setVelocityY(double velocityY)
+	{
+		this.velocityY = velocityY;
+	}
 	/** Very own random number generator */
 	private Random rand;
 
@@ -110,8 +126,33 @@ public class Ball
 
 		synchronized (jSurfaceHolder)
 		{
-			currentX += velocityX * elapsedTime;
-			currentY += velocityY * elapsedTime;
+			Line hl = getHorizLineBetween(currentY, currentY + velocityY * elapsedTime, currentX, currentX + velocityX * elapsedTime );
+			Line vl = getVertLineBetween(currentX, currentX + velocityX * elapsedTime, currentY, currentY + velocityY * elapsedTime );
+			
+			if( hl == null )
+			{
+				currentX += velocityX * elapsedTime;
+			}
+			else
+			{
+				negateVelocity(false);
+				if(!hl.isThisLineIsFixed())
+				{
+					GameParameters.clearRecentLine();
+				}
+			}
+			if( vl == null )
+			{
+				currentY += velocityY * elapsedTime;
+			}
+			else
+			{
+				negateVelocity(true);
+				if(!vl.isThisLineIsFixed())
+				{
+					GameParameters.clearRecentLine();
+				}
+			}
 
 			if (currentX >= GameParameters.getScreenWidth() - jBallBitmap.getWidth() && velocityX > 0) velocityX *= -1;
 			if (currentX <= 0 && velocityX < 0) velocityX *= -1;
@@ -122,6 +163,81 @@ public class Ball
 			jLastTime = System.currentTimeMillis();
 		}
 
+	}
+	/** Note that y2 MUST be the new y coordinate of the ball */
+	public Line getHorizLineBetween(double y1, double y2, double x1, double x2)
+	{
+		for(int i = 0; i < GameParameters.linesOnScreen; i++)
+		{
+			Line l = GameParameters.line.get(i);
+			if(l.isHorizontalLine())
+			{
+				float y = l.getOriginY();
+				if( y2 > y1 )
+				{
+					if( y1 + GameParameters.getBallHeight() < y - GameParameters.LINE_STROKE_WIDTH/2 
+						&& y2 + GameParameters.getBallHeight() > y - GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) return l;
+						else
+						{
+							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+								return l;
+						}
+					}
+				}
+				else
+				{
+					if( y1 > y + GameParameters.LINE_STROKE_WIDTH/2 && y2 <y + GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) return l;
+						else
+						{
+							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+								return l;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	public Line getVertLineBetween(double x1, double x2, double y1, double y2)
+	{
+		for(int i = 0; i < GameParameters.linesOnScreen; i++)
+		{
+			Line l = GameParameters.line.get(i);
+			if(!l.isHorizontalLine())
+			{
+				float x = l.getOriginX();
+				if( x2 > x1 )
+				{
+					if( x1 + GameParameters.getBallWidth() < x - GameParameters.LINE_STROKE_WIDTH/2
+						&& x2 + GameParameters.getBallWidth() > x - GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) return l;
+						else
+						{
+							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+								return l;
+						}
+					}
+				}
+				else
+				{
+					if( x1 > x + GameParameters.LINE_STROKE_WIDTH/2 && x2 < x + GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) return l;
+						else
+						{
+							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+								return l;
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 	/*---------------------------------------------------*/
 	/*			OUTER ACCESS FUNCTIONS					 */

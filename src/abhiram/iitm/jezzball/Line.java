@@ -20,6 +20,62 @@ public class Line
 	{
 		return horizontalLine;
 	}
+	public float getCurrentLeftX()
+	{
+		return currentLeftX;
+	}
+	public void setCurrentLeftX(float currentLeftX)
+	{
+		this.currentLeftX = currentLeftX;
+	}
+	public float getCurrentRightX()
+	{
+		return currentRightX;
+	}
+	public void setCurrentRightX(float currentRightX)
+	{
+		this.currentRightX = currentRightX;
+	}
+	public float getCurrentLeftY()
+	{
+		return currentLeftY;
+	}
+	public void setCurrentLeftY(float currentLeftY)
+	{
+		this.currentLeftY = currentLeftY;
+	}
+	public float getCurrentRightY()
+	{
+		return currentRightY;
+	}
+	public void setCurrentRightY(float currentRightY)
+	{
+		this.currentRightY = currentRightY;
+	}
+	public float getOriginX()
+	{
+		return originX;
+	}
+	public void setOriginX(float originX)
+	{
+		this.originX = originX;
+	}
+	public float getOriginY()
+	{
+		return originY;
+	}
+	public void setOriginY(float originY)
+	{
+		this.originY = originY;
+	}
+	public boolean isThisLineIsFixed()
+	{
+		return thisLineIsFixed;
+	}
+	public void setThisLineIsFixed(boolean thisLineIsFixed)
+	{
+		this.thisLineIsFixed = thisLineIsFixed;
+	}
 	public void setHorizontalLine(boolean horizontalLine)
 	{
 		this.horizontalLine = horizontalLine;
@@ -118,7 +174,7 @@ public class Line
 					if(!currentLeftXFixed)
 					{
 						currentLeftX -= lineVelocity * elapsedTime;
-						
+						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
 							Line l = GameParameters.line.get(i);
@@ -127,13 +183,13 @@ public class Line
 								if(currentLeftX < l.originX + GameParameters.LINE_STROKE_WIDTH/2 )
 									currentLeftXFixed = true;
 							}
-						}
+						}*/
 						if(currentLeftX <= 0) currentLeftXFixed = true;
 					}
 					if(!currentRightXFixed)
 					{
 						currentRightX += lineVelocity * elapsedTime;
-						
+						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
 							Line l = GameParameters.line.get(i);
@@ -142,7 +198,7 @@ public class Line
 								if(currentRightX  > l.originX - GameParameters.LINE_STROKE_WIDTH/2 )
 									currentRightXFixed = true;
 							}
-						}
+						}*/
 						if(currentRightX >= GameParameters.getScreenWidth()) currentRightXFixed = true;
 					}
 					
@@ -156,15 +212,18 @@ public class Line
 				}
 				
 				/** For each ball, we check if it has collided with the line or not */
+				/*
 				for(int i = 0; i < GameParameters.jezzBalls.length; i++ )
 				{
 					float ballX = GameParameters.jezzBalls[i].getCurrentX();
 					float ballY = GameParameters.jezzBalls[i].getCurrentY();
+					double ballVelX = GameParameters.jezzBalls[i].getVelocityX();
+					double ballVelY = GameParameters.jezzBalls[i].getVelocityY();
 					
 					
 					if( currentLeftX < ballX + GameParameters.getBallWidth() && currentRightX > ballX )
-						if( (ballY > originY && (ballY - originY) < GameParameters.LINE_STROKE_WIDTH/2) 
-							|| (ballY <= originY && originY - ballY - GameParameters.getBallHeight() < GameParameters.LINE_STROKE_WIDTH/2))
+						if( (ballY > originY && (ballY - originY) < GameParameters.LINE_STROKE_WIDTH/2 && ballVelY < 0) 
+							|| (ballY <= originY && originY - ballY - GameParameters.getBallHeight() < GameParameters.LINE_STROKE_WIDTH/2 && ballVelY >= 0 ))
 						{
 							GameParameters.jezzBalls[i].negateVelocity(false);
 							if(!thisLineIsFixed) 
@@ -175,7 +234,7 @@ public class Line
 							break;
 						}
 				
-				}
+				}*/
 			}
 			else
 			{
@@ -184,7 +243,7 @@ public class Line
 					if(!currentLeftYFixed)
 					{
 						currentLeftY -= lineVelocity * elapsedTime;
-						
+						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
 							Line l = GameParameters.line.get(i);
@@ -193,13 +252,13 @@ public class Line
 								if(currentLeftY < l.originY + GameParameters.LINE_STROKE_WIDTH/2 )
 									currentLeftYFixed = true;
 							}
-						}
+						}*/
 						if(currentLeftY <= 0) currentLeftYFixed = true;
 					}
 					if(!currentRightYFixed)
 					{
 						currentRightY += lineVelocity * elapsedTime;
-						
+						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
 							Line l = GameParameters.line.get(i);
@@ -208,7 +267,7 @@ public class Line
 								if(currentRightY  > l.originY - GameParameters.LINE_STROKE_WIDTH/2 )
 									currentRightYFixed = true;
 							}
-						}
+						}*/
 						if(currentRightY >= GameParameters.getScreenHeight()) currentRightYFixed = true;
 					}
 					/** If both the left and right are fixed, then the total line is now fixed. Add 1 to linesFixed. It will take care of the rest */
@@ -218,15 +277,17 @@ public class Line
 						GameParameters.linesFixed ++;
 					}
 				}
+				/*
 				for(int i = 0; i < GameParameters.jezzBalls.length; i++ )
 				{
 					float ballX = GameParameters.jezzBalls[i].getCurrentX();
 					float ballY = GameParameters.jezzBalls[i].getCurrentY();
-					
+					double ballVelX = GameParameters.jezzBalls[i].getVelocityX();
+					double ballVelY = GameParameters.jezzBalls[i].getVelocityY();
 					
 					if( currentLeftY < ballY + GameParameters.getBallHeight() && currentRightY > ballY )
-						if( (ballX > originX && (ballX - originX) < GameParameters.LINE_STROKE_WIDTH/2) 
-							|| (ballX <= originX && originX - ballX - GameParameters.getBallWidth() < GameParameters.LINE_STROKE_WIDTH/2))
+						if( (ballX > originX && (ballX - originX) < GameParameters.LINE_STROKE_WIDTH/2 && ballVelX < 0) 
+							|| (ballX <= originX && originX - ballX - GameParameters.getBallWidth() < GameParameters.LINE_STROKE_WIDTH/2 && ballVelX >= 0))
 						{
 							GameParameters.jezzBalls[i].negateVelocity(true);
 							if(!thisLineIsFixed) 
@@ -237,7 +298,7 @@ public class Line
 							break;
 						}
 				
-				}
+				}*/
 			}
 			
 			/** Setting the last time now to now  :D */
