@@ -21,8 +21,8 @@ public class GameParameters
 	/*
 	 * Physics constants
 	 */
-	public static final int PHYS_VEL = 100;
-	public static final int LINE_VEL = 100;
+	public static final int PHYS_VEL = 150;
+	public static final int LINE_VEL = 200;
 	/*
 	 * State-tracking constants
 	 */

@@ -250,7 +250,11 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height)
 	{
-		// TODO Auto-generated method stub
+		holder.addCallback(this);
+
+				// create thread only; it's started in surfaceCreated()
+		thread = new JezzThread(holder, jContext, new Handler());
+		thread.start();
 
 	}
 

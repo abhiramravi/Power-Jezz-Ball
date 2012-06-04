@@ -119,7 +119,7 @@ public class Line
 						if(vl == null) currentLeftX -= lineVelocity * elapsedTime;
 						else
 						{
-							currentLeftX -= lineVelocity * elapsedTime;
+							currentLeftX = vl.originX;
 							currentLeftXFixed = true;
 						}
 						/*
@@ -141,7 +141,7 @@ public class Line
 						if(vl == null) currentRightX += lineVelocity * elapsedTime;
 						else
 						{
-							currentRightX += lineVelocity * elapsedTime;
+							currentRightX = vl.originX;
 							currentRightXFixed = true;
 						}
 						
@@ -179,7 +179,7 @@ public class Line
 						if(hl == null) currentLeftY -= lineVelocity * elapsedTime;
 						else
 						{
-							currentLeftY -= lineVelocity * elapsedTime;
+							currentLeftY = hl.originY;
 							currentLeftYFixed = true;
 						}
 						
@@ -202,7 +202,7 @@ public class Line
 						if(hl == null)currentRightY += lineVelocity * elapsedTime;
 						else
 						{
-							currentRightY += lineVelocity * elapsedTime;
+							currentRightY = hl.originY;
 							currentRightYFixed = true;
 						}
 						
