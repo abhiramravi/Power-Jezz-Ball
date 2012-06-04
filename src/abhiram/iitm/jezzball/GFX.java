@@ -32,13 +32,13 @@ public class GFX extends Activity implements OnTouchListener
     @Override
     protected void onPause() {
         super.onPause();
-        jView.getThread().pause(); // pause game when Activity pauses
+        //jView.getThread().pause(); // pause game when Activity pauses
     }
 	@Override
 	protected void onResume() 
 	{
 		super.onResume();
-		jView.getThread().unpause();
+		//jView.getThread().unpause();
 	}
 	
 	
@@ -68,9 +68,12 @@ public class GFX extends Activity implements OnTouchListener
 			{
 				if(GameParameters.linesFixed == GameParameters.linesOnScreen)
 				{
-					GameParameters.line.add( new Line(jView.getHolder(), jView.getContext(), new Handler(), GameParameters.getUserAction(), startX, startY));
-					GameParameters.line.get(GameParameters.linesFixed).doStart();
-					GameParameters.linesOnScreen++;
+					if(GameParameters.isValidLineStart(startX, startY))
+					{
+						GameParameters.line.add( new Line(jView.getHolder(), jView.getContext(), new Handler(), GameParameters.getUserAction(), startX, startY));
+						GameParameters.line.get(GameParameters.linesFixed).doStart();
+						GameParameters.linesOnScreen++;
+					}
 				}
 			}
 			

@@ -44,7 +44,7 @@ public class GameParameters
 	
 
 	public static Ball[] jezzBalls;
-	private static int numberOfBalls = 3;
+	private static int numberOfBalls = 6;
 	
 	/** Currently only one line TODO: Allow multiple lines */
 	public static ArrayList<Line> line = new ArrayList<Line>();
@@ -128,5 +128,26 @@ public class GameParameters
 	public static void setjBallBitmap(Bitmap jBallBitmap)
 	{
 		GameParameters.jBallBitmap = jBallBitmap;
+	}
+
+	public static boolean isValidLineStart(float startX, float startY)
+	{
+		for(int i = 0; i < linesFixed; i++)
+		{
+			Line l = line.get(i);
+			if(l.isHorizontalLine())
+			{
+				if(Math.abs(l.getOriginY() - startY) <= GameParameters.LINE_STROKE_WIDTH/2)
+					if(startX > l.getCurrentLeftX() && startX < l.getCurrentRightX())
+						return false;
+			}
+			else
+			{
+				if(Math.abs(l.getOriginX() - startX) <= GameParameters.LINE_STROKE_WIDTH/2)
+					if(startY > l.getCurrentLeftY() && startY < l.getCurrentRightY())
+						return false;
+			}
+		}
+		return true;
 	}
 }
