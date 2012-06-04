@@ -174,26 +174,20 @@ public class Ball
 					if( y1 + GameParameters.getBallHeight() < y - GameParameters.LINE_STROKE_WIDTH/2 
 						&& y2 + GameParameters.getBallHeight() > y - GameParameters.LINE_STROKE_WIDTH/2)
 					{
-						if(l.isThisLineIsFixed()) return l;
-						else
-						{
-							//does the ball actually touch the line being constructed? 
+						
 							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
 								return l;
-						}
+						
 					}
 				}
 				else
 				{
 					if( y1 > y + GameParameters.LINE_STROKE_WIDTH/2 && y2 <y + GameParameters.LINE_STROKE_WIDTH/2)
 					{
-						if(l.isThisLineIsFixed()) return l;
-						else
-						{
 							//does the ball actually touch the line being constructed? 
 							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
 								return l;
-						}
+						
 					}
 				}
 			}
@@ -238,24 +232,18 @@ public class Ball
 					if( x1 + GameParameters.getBallWidth() < x - GameParameters.LINE_STROKE_WIDTH/2
 						&& x2 + GameParameters.getBallWidth() > x - GameParameters.LINE_STROKE_WIDTH/2)
 					{
-						if(l.isThisLineIsFixed()) return l;
-						else
-						{
 							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
 								return l;
-						}
+						
 					}
 				}
 				else
 				{
 					if( x1 > x + GameParameters.LINE_STROKE_WIDTH/2 && x2 < x + GameParameters.LINE_STROKE_WIDTH/2)
 					{
-						if(l.isThisLineIsFixed()) return l;
-						else
-						{
 							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
 								return l;
-						}
+						
 					}
 				}
 			}

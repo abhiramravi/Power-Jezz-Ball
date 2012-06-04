@@ -110,16 +110,25 @@ public class Line
 			{
 				if(!thisLineIsFixed)
 				{
+					
+					
 					if(!currentLeftXFixed)
 					{
-						currentLeftX -= lineVelocity * elapsedTime;
+						Line vl = getVertLineBetween(currentLeftX, currentLeftX - lineVelocity * elapsedTime, currentLeftY, currentLeftY);
+						
+						if(vl == null) currentLeftX -= lineVelocity * elapsedTime;
+						else
+						{
+							currentLeftX -= lineVelocity * elapsedTime;
+							currentLeftXFixed = true;
+						}
 						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
 							Line l = GameParameters.line.get(i);
 							if(!l.isHorizontalLine())
 							{
-								if(currentLeftX < l.originX + GameParameters.LINE_STROKE_WIDTH/2 )
+								if(currentLeftX < l.getOriginX() + GameParameters.LINE_STROKE_WIDTH/2 )
 									currentLeftXFixed = true;
 							}
 						}*/
@@ -127,7 +136,15 @@ public class Line
 					}
 					if(!currentRightXFixed)
 					{
-						currentRightX += lineVelocity * elapsedTime;
+						Line vl = getVertLineBetween(currentRightX, currentRightX + lineVelocity * elapsedTime, currentRightY, currentRightY);
+						
+						if(vl == null) currentRightX += lineVelocity * elapsedTime;
+						else
+						{
+							currentRightX += lineVelocity * elapsedTime;
+							currentRightXFixed = true;
+						}
+						
 						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
@@ -157,7 +174,15 @@ public class Line
 				{
 					if(!currentLeftYFixed)
 					{
-						currentLeftY -= lineVelocity * elapsedTime;
+						Line hl = getHorizLineBetween(currentLeftY, currentLeftY - lineVelocity * elapsedTime, currentLeftX, currentLeftX);
+						
+						if(hl == null) currentLeftY -= lineVelocity * elapsedTime;
+						else
+						{
+							currentLeftY -= lineVelocity * elapsedTime;
+							currentLeftYFixed = true;
+						}
+						
 						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
@@ -172,7 +197,15 @@ public class Line
 					}
 					if(!currentRightYFixed)
 					{
-						currentRightY += lineVelocity * elapsedTime;
+						Line hl = getHorizLineBetween(currentRightY, currentRightY + lineVelocity * elapsedTime, currentRightX, currentRightX);
+						
+						if(hl == null)currentRightY += lineVelocity * elapsedTime;
+						else
+						{
+							currentRightY += lineVelocity * elapsedTime;
+							currentRightYFixed = true;
+						}
+						
 						/*
 						for(int i = 0; i < GameParameters.linesFixed; i++)
 						{
@@ -198,6 +231,77 @@ public class Line
 			jLastTime = System.currentTimeMillis();
 		}
 
+	}
+	public Line getHorizLineBetween(double y1, double y2, double x1, double x2)
+	{
+		for(int i = 0; i < GameParameters.linesOnScreen; i++)
+		{
+			Line l = GameParameters.line.get(i);
+			//If l is a horizontal line 
+			if(l.isHorizontalLine())
+			{
+				float y = l.getOriginY();
+				if( y2 > y1 )
+				{
+					if( y1  < y - GameParameters.LINE_STROKE_WIDTH/2 
+						&& y2 > y - GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) 
+							//does the line actually touch the line being constructed? 
+							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+								return l;
+						
+					}
+				}
+				else
+				{
+					if( y1 > y + GameParameters.LINE_STROKE_WIDTH/2 && y2 <y + GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) 
+							//does the line actually touch the line being constructed? 
+							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+								return l;
+						
+					}
+				}
+			}
+		}
+		return null;
+	}
+	public Line getVertLineBetween(double x1, double x2, double y1, double y2)
+	{
+		for(int i = 0; i < GameParameters.linesOnScreen; i++)
+		{
+			Line l = GameParameters.line.get(i);
+			//If l is a vertical line
+			if(!l.isHorizontalLine())
+			{
+				
+				float x = l.getOriginX();
+				if( x2 > x1 )
+				{
+					if( x1  < x - GameParameters.LINE_STROKE_WIDTH/2
+						&& x2  > x - GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) 
+							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+								return l;
+						
+					}
+				}
+				else
+				{
+					if( x1 > x + GameParameters.LINE_STROKE_WIDTH/2 && x2 < x + GameParameters.LINE_STROKE_WIDTH/2)
+					{
+						if(l.isThisLineIsFixed()) 
+							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+								return l;
+						
+					}
+				}
+			}
+		}
+		return null;
 	}
 	/*---------------------------------------------------*/
 	/*			OUTER ACCESS FUNCTIONS					 */
