@@ -63,7 +63,7 @@ public class Line
 	}
 	public void doStart()
 	{
-		synchronized (jSurfaceHolder)
+		synchronized (GameParameters.lock)
 		{
 			lineVelocity = GameParameters.LINE_VEL;
 

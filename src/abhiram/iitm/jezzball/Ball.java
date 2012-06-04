@@ -107,7 +107,7 @@ public class Ball
 			
 			if( hl == null )
 			{
-				currentX += velocityX * elapsedTime;
+				currentY += velocityY * elapsedTime;
 			}
 			else
 			{
@@ -119,7 +119,7 @@ public class Ball
 			}
 			if( vl == null )
 			{
-				currentY += velocityY * elapsedTime;
+				currentX += velocityX * elapsedTime;
 			}
 			else
 			{
@@ -169,23 +169,28 @@ public class Ball
 					is checked, and is returned only if so
 			
 				 */
+				if( y1 + GameParameters.getBallHeight() >= y - GameParameters.LINE_STROKE_WIDTH/2
+					&& y1 <= y + GameParameters.LINE_STROKE_WIDTH/2)
+					if(x1 + GameParameters.getBallWidth() >= l.getCurrentLeftX() && x1 <= l.getCurrentRightX() )
+						return l;
+				
 				if( y2 > y1 )
 				{
-					if( y1 + GameParameters.getBallHeight() < y - GameParameters.LINE_STROKE_WIDTH/2 
-						&& y2 + GameParameters.getBallHeight() > y - GameParameters.LINE_STROKE_WIDTH/2)
+					if( y1 + GameParameters.getBallHeight() <= y - GameParameters.LINE_STROKE_WIDTH/2 
+						&& y2 + GameParameters.getBallHeight() >= y - GameParameters.LINE_STROKE_WIDTH/2)
 					{
 						
-							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+							if(x2 + GameParameters.getBallWidth() >= l.getCurrentLeftX() && x2 <= l.getCurrentRightX() )
 								return l;
 						
 					}
 				}
 				else
 				{
-					if( y1 > y + GameParameters.LINE_STROKE_WIDTH/2 && y2 <y + GameParameters.LINE_STROKE_WIDTH/2)
+					if( y1 >= y + GameParameters.LINE_STROKE_WIDTH/2 && y2 <=y + GameParameters.LINE_STROKE_WIDTH/2)
 					{
 							//does the ball actually touch the line being constructed? 
-							if(x2 > l.getCurrentLeftX() && x2 < l.getCurrentRightX() )
+							if(x2 + GameParameters.getBallWidth() >= l.getCurrentLeftX() && x2 <= l.getCurrentRightX() )
 								return l;
 						
 					}
@@ -227,21 +232,26 @@ public class Ball
 				
 				
 				float x = l.getOriginX();
+				if( x1 + GameParameters.getBallWidth() >= x - GameParameters.LINE_STROKE_WIDTH/2
+					&& x1 <= x + GameParameters.LINE_STROKE_WIDTH/2)
+					if( y1 + GameParameters.getBallHeight() >= l.getCurrentLeftY() && y1 <= l.getCurrentRightY() ) 
+						return l;
+				
 				if( x2 > x1 )
 				{
-					if( x1 + GameParameters.getBallWidth() < x - GameParameters.LINE_STROKE_WIDTH/2
-						&& x2 + GameParameters.getBallWidth() > x - GameParameters.LINE_STROKE_WIDTH/2)
+					if( x1 + GameParameters.getBallWidth() <= x - GameParameters.LINE_STROKE_WIDTH/2
+						&& x2 + GameParameters.getBallWidth() >= x - GameParameters.LINE_STROKE_WIDTH/2)
 					{
-							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+							if( y2 + GameParameters.getBallHeight() >= l.getCurrentLeftY() && y2 <= l.getCurrentRightY() ) 
 								return l;
 						
 					}
 				}
 				else
 				{
-					if( x1 > x + GameParameters.LINE_STROKE_WIDTH/2 && x2 < x + GameParameters.LINE_STROKE_WIDTH/2)
+					if( x1 >= x + GameParameters.LINE_STROKE_WIDTH/2 && x2 <= x + GameParameters.LINE_STROKE_WIDTH/2)
 					{
-							if( y2 > l.getCurrentLeftY() && y2 < l.getCurrentRightY() ) 
+							if( y2 + GameParameters.getBallHeight() >= l.getCurrentLeftY() && y2 <= l.getCurrentRightY() ) 
 								return l;
 						
 					}
