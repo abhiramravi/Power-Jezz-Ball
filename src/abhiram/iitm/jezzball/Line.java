@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class Line
@@ -37,6 +38,7 @@ public class Line
 	
 	/** The paint variable that defines the style of the line */
 	private Paint p;
+	private Paint q;
 	
 	/* This is redundant - because the line itself is destroyed on ball touch - just kept for safekeeping */
 	private boolean isNotDestroyed;
@@ -49,6 +51,8 @@ public class Line
 	
 	private boolean thisLineIsFixed;
 	
+	/* Left fixed and top fixed are synonymous for horizontal and vertical lines 
+	 * This is true for any left/top right/bottom synonimity */
 	private boolean isLeftFixedToScreen;
 	private boolean isRightFixedToScreen;
 	
@@ -57,11 +61,11 @@ public class Line
 	
 	private boolean pendingColor;
 	
-	private Rectangle partitionTop;
-	private Rectangle partitionBottom;
+	private Rectangle partitionTop;//partitionLeft syn
+	private Rectangle partitionBottom;//partitionRight syn
 	
-	private boolean colorTop;
-	private boolean colorBottom;
+	private boolean colorTop;//left syn
+	private boolean colorBottom;//right syn
 
 	public Line(SurfaceHolder surfaceHolder, Context context, Handler handler, boolean userAction, float x, float y)
 	{
@@ -89,6 +93,9 @@ public class Line
 			p.setColor(Color.GRAY);
 			p.setStrokeWidth(GameParameters.LINE_STROKE_WIDTH);
 			
+			q = new Paint();
+			q.setColor(Color.GRAY);
+			
 			jLastTime = System.currentTimeMillis();
 			
 			isNotDestroyed = true;
@@ -100,6 +107,8 @@ public class Line
 			thisLineIsFixed = false;
 			isLeftFixedToScreen = false;
 			isRightFixedToScreen = false;
+			lineLeftFixedTo = null;
+			lineRightFixedTo = null;
 			
 			pendingColor = false;
 			colorTop = false;
@@ -111,16 +120,24 @@ public class Line
 	{
 		if(isNotDestroyed) 
 		{
+			
 			canvas.drawLine(currentLeftX, currentLeftY, currentRightX, currentRightY, p);
 			if(colorTop)
 			{
-				colorTop = false;
-				canvas.drawRect(partitionTop.x1, partitionTop.y1, partitionTop.x2, partitionTop.y2, p);
+				float maxX = Math.max(partitionTop.x1, partitionTop.x2);
+				float minX = Math.min(partitionTop.x1, partitionTop.x2);
+				float maxY = Math.max(partitionTop.y1, partitionTop.y2);
+				float minY = Math.min(partitionTop.y1, partitionTop.y2);
+				canvas.drawRect(minX, minY, maxX, maxY, q);
+				
 			}
 			if(colorBottom)
 			{
-				colorBottom = false;
-				canvas.drawRect(partitionBottom.x1, partitionBottom.y1, partitionBottom.x2, partitionBottom.y2, p);
+				float maxX = Math.max(partitionBottom.x1, partitionBottom.x2);
+				float minX = Math.min(partitionBottom.x1, partitionBottom.x2);
+				float maxY = Math.max(partitionBottom.y1, partitionBottom.y2);
+				float minY = Math.min(partitionBottom.y1, partitionBottom.y2);
+				canvas.drawRect(minX, minY, maxX, maxY, q);
 			}
 			
 		}
@@ -155,6 +172,7 @@ public class Line
 						}
 						if(currentLeftX <= 0) 
 						{
+							currentLeftX = 0;
 							currentLeftXFixed = true;
 							isLeftFixedToScreen = true;
 						}
@@ -174,6 +192,7 @@ public class Line
 						
 						if(currentRightX >= GameParameters.getScreenWidth()) 
 						{
+							currentRightX = GameParameters.getScreenWidth();
 							currentRightXFixed = true;
 							isRightFixedToScreen = true;
 						}
@@ -193,8 +212,29 @@ public class Line
 						{
 							x1 = lineRightFixedTo.currentLeftX;
 							y1 = lineRightFixedTo.currentLeftY;
+							
+							
 							x2 = lineRightFixedTo.currentRightX;
 							y2 = lineRightFixedTo.currentRightY;
+							
+							//checkForInBetweenLinesAndUpdate y1,y2
+							for(int i = 0; i < GameParameters.linesFixed; i++)
+							{
+								Line l = GameParameters.line.get(i);
+								if(l.isHorizontalLine())
+								{
+									if(l.currentLeftX == this.currentLeftX && l.lineRightFixedTo.equals(this.lineRightFixedTo))
+									{
+										//leftY and rightY are same here 
+										if(l.currentRightY > y1 && l.currentRightY < this.currentRightY)
+											y1 = l.currentRightY;
+										if(l.currentRightY > this.currentRightY && l.currentRightY < y2)
+											y2 = l.currentRightY;
+									}
+									
+								}
+							}
+							
 							
 							partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, x1, y1);
 							partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, x2, y2);
@@ -209,12 +249,32 @@ public class Line
 								x2 = lineLeftFixedTo.currentRightX;
 								y2 = lineLeftFixedTo.currentRightY;
 								
+								//checkForInBetweenLinesAndUpdate y1,y2
+								for(int i = 0; i < GameParameters.linesFixed; i++)
+								{
+									Line l = GameParameters.line.get(i);
+									if(l.isHorizontalLine())
+									{
+										if(l.currentRightX == this.currentRightX && l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+										{
+											//gen replacing leftY for rightY - all the same y
+											if(l.currentLeftY > y1 && l.currentLeftY < this.currentLeftY)
+												y1 = l.currentLeftY;
+											if(l.currentLeftY > this.currentLeftY && l.currentLeftY < y2)
+												y2 = l.currentLeftY;
+										}
+										
+									}
+								}
+								
+								
 								partitionTop = new Rectangle(this.currentRightX, this.currentRightY, x1, y1);
 								partitionBottom = new Rectangle(this.currentRightX, this.currentRightY, x2, y2);
 							}
 							//if it touches the screen wall on both sides
 							else
 							{
+								Log.d("Screenwidth", Float.toString(GameParameters.getScreenWidth()));
 								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), 0);
 								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), GameParameters.getScreenHeight());
 							}
@@ -266,6 +326,7 @@ public class Line
 						
 						if(currentLeftY <= 0) 
 						{
+							currentLeftY = 0;
 							isLeftFixedToScreen = true;
 							currentLeftYFixed = true;
 						}
@@ -284,6 +345,7 @@ public class Line
 						
 						if(currentRightY >= GameParameters.getScreenHeight()) 
 						{
+							currentRightY = GameParameters.getScreenHeight();
 							isRightFixedToScreen = true;
 							currentRightYFixed = true;
 						}
@@ -293,6 +355,101 @@ public class Line
 					{
 						thisLineIsFixed = true;
 						GameParameters.linesFixed ++;
+						
+						/** Now this fixed line has created a partition. One of them may need to be colored */
+						float x1, y1, x2, y2;
+						//If the current line is obstructed by another line to the right
+						if(!isRightFixedToScreen)
+						{
+							x1 = lineRightFixedTo.currentLeftX;
+							y1 = lineRightFixedTo.currentLeftY;
+							x2 = lineRightFixedTo.currentRightX;
+							y2 = lineRightFixedTo.currentRightY;
+							
+							//updating x1 and x2 with inbetween lines 
+							for(int i = 0; i < GameParameters.linesFixed; i++)
+							{
+								Line l = GameParameters.line.get(i);
+								if(!l.isHorizontalLine())
+								{
+									if(l.currentLeftX == this.currentLeftX && l.lineRightFixedTo.equals(this.lineRightFixedTo))
+									{
+										//leftX and rightX are same here 
+										if(l.currentRightX > x1 && l.currentRightX < this.currentRightX)
+											x1 = l.currentRightX;
+										if(l.currentRightX > this.currentRightX && l.currentRightX < x2)
+											x2 = l.currentRightX;
+									}
+									
+								}
+							}
+							
+							partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, x1, y1);
+							partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, x2, y2);
+						}
+						else
+						{
+							//if the line is obstructed by another line to the left
+							if(!isLeftFixedToScreen)
+							{
+								x1 = lineLeftFixedTo.currentLeftX;
+								y1 = lineLeftFixedTo.currentLeftY;
+								x2 = lineLeftFixedTo.currentRightX;
+								y2 = lineLeftFixedTo.currentRightY;
+								
+								for(int i = 0; i < GameParameters.linesFixed; i++)
+								{
+									Line l = GameParameters.line.get(i);
+									if(!l.isHorizontalLine())
+									{
+										if(l.currentRightX == this.currentRightX && l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+										{
+											//leftX and rightX are same here 
+											if(l.currentLeftX > x1 && l.currentLeftX < this.currentLeftX)
+												x1 = l.currentLeftX;
+											if(l.currentLeftX > this.currentLeftX && l.currentLeftX < x2)
+												x2 = l.currentLeftX;
+										}
+										
+									}
+								}
+								
+								partitionTop = new Rectangle(this.currentRightX, this.currentRightY, x1, y1);
+								partitionBottom = new Rectangle(this.currentRightX, this.currentRightY, x2, y2);
+							}
+							//if it touches the screen wall on both sides
+							else
+							{
+								
+								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), GameParameters.getScreenHeight());
+								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, 0, GameParameters.getScreenHeight());
+							}
+						}
+						//TODO : Check if there is a ball in each of these partitions - color otherwise
+						colorTop = true;
+						colorBottom = true;
+						for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
+						{
+							Ball b = GameParameters.jezzBalls[i];
+							float maxX = Math.max(partitionTop.x1, partitionTop.x2);
+							float minX = Math.min(partitionTop.x1, partitionTop.x2);
+							float maxY = Math.max(partitionTop.y1, partitionTop.y2);
+							float minY = Math.min(partitionTop.y1, partitionTop.y2);
+							
+							if(minX < b.getCurrentX() && b.getCurrentX() < maxX
+								&& minY < b.getCurrentY() && b.getCurrentY() < maxY)
+								colorTop = false;
+							
+							maxX = Math.max(partitionBottom.x1, partitionBottom.x2);
+							minX = Math.min(partitionBottom.x1, partitionBottom.x2);
+							maxY = Math.max(partitionBottom.y1, partitionBottom.y2);
+							minY = Math.min(partitionBottom.y1, partitionBottom.y2);
+							
+							if(minX < b.getCurrentX() && b.getCurrentX() < maxX
+								&& minY < b.getCurrentY() && b.getCurrentY() < maxY)
+								colorBottom = false;
+						}
+						
 					}
 				}
 			}
