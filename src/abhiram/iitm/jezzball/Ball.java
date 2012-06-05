@@ -130,10 +130,27 @@ public class Ball
 				}
 			}
 
-			if (currentX >= GameParameters.getScreenWidth() - jBallBitmap.getWidth() && velocityX > 0) velocityX *= -1;
-			if (currentX <= 0 && velocityX < 0) velocityX *= -1;
-			if (currentY <= 0 && velocityY < 0) velocityY *= -1;
-			if (currentY >= GameParameters.getScreenHeight() - jBallBitmap.getHeight() && velocityY > 0) velocityY *= -1;
+			if (currentX >= GameParameters.getScreenWidth() - jBallBitmap.getWidth() && velocityX > 0) 
+			{
+				//not allowing the ball to go beyond the borderline at all - IMPORTANT FOR RECTANGLE COLORING
+				currentX -= velocityX * elapsedTime;
+				velocityX *= -1;
+			}
+			if (currentX <= 0 && velocityX < 0) 
+			{
+				currentX -= velocityX * elapsedTime;
+				velocityX *= -1;
+			}
+			if (currentY <= 0 && velocityY < 0) 
+			{
+				currentY -= velocityY * elapsedTime;
+				velocityY *= -1;
+			}
+			if (currentY >= GameParameters.getScreenHeight() - jBallBitmap.getHeight() && velocityY > 0) 
+			{
+				currentY -= velocityY * elapsedTime;
+				velocityY *= -1;
+			}
 			
 			/** Setting the last time now to now  :D */
 			jLastTime = System.currentTimeMillis();

@@ -223,13 +223,16 @@ public class Line
 								Line l = GameParameters.line.get(i);
 								if(l.isHorizontalLine())
 								{
-									if(l.currentLeftX == this.currentLeftX && l.lineRightFixedTo.equals(this.lineRightFixedTo))
+									if(l.currentLeftX == this.currentLeftX && !l.isRightFixedToScreen)
 									{
-										//leftY and rightY are same here 
-										if(l.currentRightY > y1 && l.currentRightY < this.currentRightY)
-											y1 = l.currentRightY;
-										if(l.currentRightY > this.currentRightY && l.currentRightY < y2)
-											y2 = l.currentRightY;
+										if(l.lineRightFixedTo.equals(this.lineRightFixedTo))
+										{
+											//leftY and rightY are same here 
+											if(l.currentRightY > y1 && l.currentRightY < this.currentRightY)
+												y1 = l.currentRightY;
+											if(l.currentRightY > this.currentRightY && l.currentRightY < y2)
+												y2 = l.currentRightY;
+										}
 									}
 									
 								}
@@ -255,13 +258,16 @@ public class Line
 									Line l = GameParameters.line.get(i);
 									if(l.isHorizontalLine())
 									{
-										if(l.currentRightX == this.currentRightX && l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+										if(l.currentRightX == this.currentRightX && !l.isLeftFixedToScreen)
 										{
-											//gen replacing leftY for rightY - all the same y
-											if(l.currentLeftY > y1 && l.currentLeftY < this.currentLeftY)
-												y1 = l.currentLeftY;
-											if(l.currentLeftY > this.currentLeftY && l.currentLeftY < y2)
-												y2 = l.currentLeftY;
+											if(l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+											{
+												//gen replacing leftY for rightY - all the same y
+												if(l.currentLeftY > y1 && l.currentLeftY < this.currentLeftY)
+													y1 = l.currentLeftY;
+												if(l.currentLeftY > this.currentLeftY && l.currentLeftY < y2)
+													y2 = l.currentLeftY;
+											}
 										}
 										
 									}
@@ -372,13 +378,16 @@ public class Line
 								Line l = GameParameters.line.get(i);
 								if(!l.isHorizontalLine())
 								{
-									if(l.currentLeftX == this.currentLeftX && l.lineRightFixedTo.equals(this.lineRightFixedTo))
+									if(l.currentLeftY == this.currentLeftY && !l.isRightFixedToScreen)
 									{
-										//leftX and rightX are same here 
-										if(l.currentRightX > x1 && l.currentRightX < this.currentRightX)
-											x1 = l.currentRightX;
-										if(l.currentRightX > this.currentRightX && l.currentRightX < x2)
-											x2 = l.currentRightX;
+										if(l.lineRightFixedTo.equals(this.lineRightFixedTo))
+										{
+											//leftX and rightX are same here 
+											if(l.currentRightX > x1 && l.currentRightX < this.currentRightX)
+												x1 = l.currentRightX;
+											if(l.currentRightX > this.currentRightX && l.currentRightX < x2)
+												x2 = l.currentRightX;
+										}
 									}
 									
 								}
@@ -402,13 +411,16 @@ public class Line
 									Line l = GameParameters.line.get(i);
 									if(!l.isHorizontalLine())
 									{
-										if(l.currentRightX == this.currentRightX && l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+										if(l.currentRightY == this.currentRightY && !l.isLeftFixedToScreen)
 										{
-											//leftX and rightX are same here 
-											if(l.currentLeftX > x1 && l.currentLeftX < this.currentLeftX)
-												x1 = l.currentLeftX;
-											if(l.currentLeftX > this.currentLeftX && l.currentLeftX < x2)
-												x2 = l.currentLeftX;
+											if(l.lineLeftFixedTo.equals(this.lineLeftFixedTo))
+											{
+												//leftX and rightX are same here 
+												if(l.currentLeftX > x1 && l.currentLeftX < this.currentLeftX)
+													x1 = l.currentLeftX;
+												if(l.currentLeftX > this.currentLeftX && l.currentLeftX < x2)
+													x2 = l.currentLeftX;
+											}
 										}
 										
 									}
