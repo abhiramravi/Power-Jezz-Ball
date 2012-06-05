@@ -21,8 +21,8 @@ public class GameParameters
 	/*
 	 * Physics constants
 	 */
-	public static final int PHYS_VEL = 150;
-	public static final int LINE_VEL = 200;
+	public static final int PHYS_VEL = 100;
+	public static final int LINE_VEL = 150;
 	/*
 	 * State-tracking constants
 	 */
@@ -41,6 +41,22 @@ public class GameParameters
 	
 	private static int screenWidth;
 	private static int screenHeight;
+	
+	private static int screenArea;
+	private static float areaConquered;
+	
+	public static void resetAreaConquered()
+	{
+		areaConquered = 0;
+	}
+	public static float getAreaConquered()
+	{
+		return areaConquered;
+	}
+	public static void addToAreaConquered(float s)
+	{
+		areaConquered += s;
+	}
 	
 
 	public static Ball[] jezzBalls;
@@ -130,6 +146,16 @@ public class GameParameters
 		GameParameters.jBallBitmap = jBallBitmap;
 	}
 
+	public static int getScreenArea()
+	{
+		return screenArea;
+	}
+
+	public static void setScreenArea(int screenArea)
+	{
+		GameParameters.screenArea = screenArea;
+	}
+	
 	public static boolean isValidLineStart(float startX, float startY)
 	{
 		for(int i = 0; i < linesFixed; i++)
@@ -146,6 +172,26 @@ public class GameParameters
 				if(Math.abs(l.getOriginX() - startX) <= GameParameters.LINE_STROKE_WIDTH/2)
 					if(startY > l.getCurrentLeftY() && startY < l.getCurrentRightY())
 						return false;
+			}
+			if(l.isColorTop())
+			{
+				float maxX = Math.max(l.getPartitionTop().x1, l.getPartitionTop().x2);
+				float minX = Math.min(l.getPartitionTop().x1, l.getPartitionTop().x2);
+				float maxY = Math.max(l.getPartitionTop().y1, l.getPartitionTop().y2);
+				float minY = Math.min(l.getPartitionTop().y1, l.getPartitionTop().y2);
+				
+				if(minX < startX && startX < maxX && minY < startY && startY < maxY)
+					return false;
+			}
+			if(l.isColorBottom())
+			{
+				float maxX = Math.max(l.getPartitionBottom().x1, l.getPartitionBottom().x2);
+				float minX = Math.min(l.getPartitionBottom().x1, l.getPartitionBottom().x2);
+				float maxY = Math.max(l.getPartitionBottom().y1, l.getPartitionBottom().y2);
+				float minY = Math.min(l.getPartitionBottom().y1, l.getPartitionBottom().y2);
+				
+				if(minX < startX && startX < maxX && minY < startY && startY < maxY)
+					return false;
 			}
 		}
 		return true;

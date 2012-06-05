@@ -65,8 +65,7 @@ public class Ball
 			rand = new Random();
 
 			// initial random location for the ball
-			GameParameters.setScreenWidth(jSurfaceHolder.getSurfaceFrame().width());
-			GameParameters.setScreenHeight(jSurfaceHolder.getSurfaceFrame().height());
+			
 			
 			currentX = rand.nextInt(100);
 			currentY = rand.nextInt(100);

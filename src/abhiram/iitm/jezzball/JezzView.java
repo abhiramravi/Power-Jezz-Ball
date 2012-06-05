@@ -7,12 +7,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Message;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View.OnClickListener;
 
 public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -47,6 +47,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		private int screenWidth;
 		private int screenHeight;
 		
+		private int color;
 		public SurfaceHolder getJSurfaceHolder()
 		{
 			return this.jSurfaceHolder;
@@ -71,13 +72,17 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			GameParameters.setjBallBitmap(BitmapFactory.decodeResource(res, R.drawable.ball));
 			GameParameters.setBallWidth(GameParameters.getjBallBitmap().getWidth());
 			GameParameters.setBallHeight(GameParameters.getjBallBitmap().getHeight());
-			
+			GameParameters.setScreenWidth(jSurfaceHolder.getSurfaceFrame().width());
+			GameParameters.setScreenHeight(jSurfaceHolder.getSurfaceFrame().height());
+			GameParameters.setScreenArea(GameParameters.getScreenHeight() * GameParameters.getScreenWidth());
+			GameParameters.resetAreaConquered();
 			
 			// TODO : Initialize paints for speedometer
 			jDifficulty = GameParameters.DIFFICULTY_MEDIUM;
 			
 			//TODO : Must make this change based on level of game
 			numberOfBalls = GameParameters.getNumberOfBalls();
+			color = Color.WHITE;
 
 		}
 
@@ -133,7 +138,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			synchronized(GameParameters.lock)
 			{
-				canvas.drawRGB(255, 255, 255);
+				canvas.drawColor(color);
 				for(int i = 0; i < GameParameters.linesOnScreen; i++ )
 				{
 					GameParameters.line.get(i).doDraw(canvas);
@@ -148,8 +153,14 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 
 		private void updatePhysics()
 		{
+			if(GameParameters.getAreaConquered()/GameParameters.getScreenArea() > 0.75)
+			{
+				color = Color.CYAN;
+				Log.d("WIN!", Float.toString(GameParameters.getAreaConquered()) + " " + Float.toString(GameParameters.getScreenArea()));
+			}
 			synchronized(GameParameters.lock)
 			{
+				
 				for(int i = 0; i < GameParameters.linesOnScreen; i++ )
 				{
 					GameParameters.line.get(i).updatePhysics();

@@ -51,19 +51,23 @@ public class Line
 	
 	private boolean thisLineIsFixed;
 	
-	/* Left fixed and top fixed are synonymous for horizontal and vertical lines 
+	/** Left fixed and top fixed are synonymous for horizontal and vertical lines 
 	 * This is true for any left/top right/bottom synonimity */
 	private boolean isLeftFixedToScreen;
 	private boolean isRightFixedToScreen;
 	
+	/** The lines that this line is left/right top/bottom fixed to */
 	private Line lineLeftFixedTo;
 	private Line lineRightFixedTo;
 	
+	/** Redundant*/
 	private boolean pendingColor;
 	
+	/** The Rectangles representing the two partitions made once the line is fixed */
 	private Rectangle partitionTop;//partitionLeft syn
 	private Rectangle partitionBottom;//partitionRight syn
 	
+	/** The booleans that tell if the the corresponding partitions must be colored or not */
 	private boolean colorTop;//left syn
 	private boolean colorBottom;//right syn
 
@@ -94,10 +98,11 @@ public class Line
 			p.setStrokeWidth(GameParameters.LINE_STROKE_WIDTH);
 			
 			q = new Paint();
-			q.setColor(Color.GRAY);
+			q.setColor(Color.LTGRAY);
 			
 			jLastTime = System.currentTimeMillis();
 			
+			//Initializing all important variables 
 			isNotDestroyed = true;
 			currentLeftXFixed = false;
 			currentRightXFixed = false;
@@ -120,8 +125,10 @@ public class Line
 	{
 		if(isNotDestroyed) 
 		{
-			
+			//drawing the line 
 			canvas.drawLine(currentLeftX, currentLeftY, currentRightX, currentRightY, p);
+			
+			//coloring the rectangles if required - note that this is done in every cycle 
 			if(colorTop)
 			{
 				float maxX = Math.max(partitionTop.x1, partitionTop.x2);
@@ -148,18 +155,19 @@ public class Line
 		
 		
 		double elapsedTime = (now - jLastTime)/1000.0;
-		// screen parameters
-		screenWidth = jSurfaceHolder.getSurfaceFrame().width();
-		screenHeight = jSurfaceHolder.getSurfaceFrame().height();
 
 		synchronized (jSurfaceHolder)
 		{
+			//If this line is a horizontal line 
 			if(horizontalLine) 
 			{
+				//only if this line is not yet fixed
 				if(!thisLineIsFixed)
 				{
+					//If it is not yet left-fixed update the current value of currentLeftX
 					if(!currentLeftXFixed)
 					{
+						//checks if it has collided with another line
 						Line vl = getVertLineBetween(currentLeftX, currentLeftX - lineVelocity * elapsedTime, currentLeftY, currentLeftY);
 						
 						if(vl == null) currentLeftX -= lineVelocity * elapsedTime;
@@ -177,6 +185,7 @@ public class Line
 							isLeftFixedToScreen = true;
 						}
 					}
+					//if it is not yet right-fixed, then update the value of currentRightX
 					if(!currentRightXFixed)
 					{
 						Line vl = getVertLineBetween(currentRightX, currentRightX + lineVelocity * elapsedTime, currentRightY, currentRightY);
@@ -308,7 +317,7 @@ public class Line
 								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, x2, y2);
 							}
 						}
-						//TODO : Check if there is a ball in each of these partitions - color otherwise
+						// Checks if there is a ball in each of these partitions - color otherwise
 						colorTop = true;
 						colorBottom = true;
 						for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
@@ -331,6 +340,17 @@ public class Line
 							if(minX < b.getCurrentX() && b.getCurrentX() < maxX
 								&& minY < b.getCurrentY() && b.getCurrentY() < maxY)
 								colorBottom = false;
+						}
+						
+						//adding to the score
+						
+						if(colorTop)
+						{
+							GameParameters.addToAreaConquered(partitionTop.getArea());
+						}
+						if(colorBottom)
+						{
+							GameParameters.addToAreaConquered(partitionBottom.getArea());
 						}
 						
 					}
@@ -508,6 +528,15 @@ public class Line
 								colorBottom = false;
 						}
 						
+						if(colorTop)
+						{
+							GameParameters.addToAreaConquered(partitionTop.getArea());
+						}
+						if(colorBottom)
+						{
+							GameParameters.addToAreaConquered(partitionBottom.getArea());
+						}
+						
 					}
 				}
 			}
@@ -655,6 +684,22 @@ public class Line
 	{
 		this.horizontalLine = horizontalLine;
 	}
+	public Rectangle getPartitionTop()
+	{
+		return this.partitionTop;
+	}
+	public Rectangle getPartitionBottom()
+	{
+		return this.partitionBottom;
+	}
+	public boolean isColorTop()
+	{
+		return this.colorTop;
+	}
+	public boolean isColorBottom()
+	{
+		return this.colorBottom;
+	}
 }
 class Rectangle
 {
@@ -667,5 +712,14 @@ class Rectangle
 		this.y2 = y2;
 	}
 	
+	public float getArea()
+	{
+		float maxX = Math.max(x1, x2);
+		float minX = Math.min(x1, x2);
+		float maxY = Math.max(y1, y2);
+		float minY = Math.min(y1, y2);
+		
+		return (maxX - minX) * (maxY - minY);
+	}
 
 }
