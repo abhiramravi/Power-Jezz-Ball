@@ -280,9 +280,32 @@ public class Line
 							//if it touches the screen wall on both sides
 							else
 							{
-								Log.d("Screenwidth", Float.toString(GameParameters.getScreenWidth()));
-								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), 0);
-								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), GameParameters.getScreenHeight());
+								x1 = GameParameters.getScreenWidth();
+								y1 = 0;
+								x2 = GameParameters.getScreenWidth();
+								y2 = GameParameters.getScreenHeight();
+								
+								//checkForInBetweenLinesAndUpdate y1,y2
+								for(int i = 0; i < GameParameters.linesFixed; i++)
+								{
+									Line l = GameParameters.line.get(i);
+									if(l.isHorizontalLine())
+									{
+										if(l.isLeftFixedToScreen && l.isRightFixedToScreen)
+										{
+											//gen replacing leftY for rightY - all the same y
+											if(l.currentLeftY > y1 && l.currentLeftY < this.currentLeftY)
+												y1 = l.currentLeftY;
+											if(l.currentLeftY > this.currentLeftY && l.currentLeftY < y2)
+												y2 = l.currentLeftY;
+											
+										}
+										
+									}
+								}
+								
+								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, x1, y1);
+								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, x2, y2);
 							}
 						}
 						//TODO : Check if there is a ball in each of these partitions - color otherwise
@@ -432,9 +455,32 @@ public class Line
 							//if it touches the screen wall on both sides
 							else
 							{
+								x1 = 0;
+								y1 = GameParameters.getScreenHeight();
+								x2 = GameParameters.getScreenWidth();
+								y2 = GameParameters.getScreenHeight();
 								
-								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, GameParameters.getScreenWidth(), GameParameters.getScreenHeight());
-								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, 0, GameParameters.getScreenHeight());
+								//checkForInBetweenLinesAndUpdate y1,y2
+								for(int i = 0; i < GameParameters.linesFixed; i++)
+								{
+									Line l = GameParameters.line.get(i);
+									if(!l.isHorizontalLine())
+									{
+										if(l.isLeftFixedToScreen && l.isRightFixedToScreen)
+										{
+											//leftX and rightX are same here 
+											if(l.currentLeftX > x1 && l.currentLeftX < this.currentLeftX)
+												x1 = l.currentLeftX;
+											if(l.currentLeftX > this.currentLeftX && l.currentLeftX < x2)
+												x2 = l.currentLeftX;
+											
+										}
+										
+									}
+								}
+								
+								partitionTop = new Rectangle(this.currentLeftX, this.currentLeftY, x1, y1);
+								partitionBottom = new Rectangle(this.currentLeftX, this.currentLeftY, x2, y2);
 							}
 						}
 						//TODO : Check if there is a ball in each of these partitions - color otherwise

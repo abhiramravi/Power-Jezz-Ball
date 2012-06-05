@@ -78,7 +78,7 @@ public class Ball
 			velocityY = Math.cos(randDegrees) * GameParameters.PHYS_VEL;
 			velocityX = Math.sin(randDegrees) * GameParameters.PHYS_VEL;
 			//Make sure that the state is set to running after the dostart() of all balls are called.
-			jLastTime = System.currentTimeMillis() + 3000;
+			jLastTime = System.currentTimeMillis() ;
 		}
 	}
 
