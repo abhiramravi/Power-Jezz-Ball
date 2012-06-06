@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -225,6 +226,20 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 	/** The thread that actually draws the animation */
 	private JezzThread thread;
 
+	public JezzView(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+
+		// register our interest in hearing about changes to our surface
+		SurfaceHolder holder = getHolder();
+		holder.addCallback(this);
+		
+		
+		// create thread only; it's started in surfaceCreated()
+		thread = new JezzThread(holder, context, new Handler());
+
+		setFocusable(true); // make sure we get key events
+	}
 	public JezzView(Context context)
 	{
 		super(context);

@@ -16,6 +16,7 @@ public final class R {
     }
     public static final class id {
         public static final int jezzball=0x7f050000;
+        public static final int text=0x7f050001;
     }
     public static final class layout {
         public static final int lunar_layout=0x7f030000;

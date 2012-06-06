@@ -20,8 +20,8 @@ public class GFX extends Activity implements OnTouchListener
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
-	    jView = new JezzView(this);
-	    setContentView(jView);
+	    setContentView(R.layout.lunar_layout);
+	    jView = (JezzView) findViewById(R.id.jezzball);
 	    jView.setOnTouchListener(this);
 	    jJezzThread = jView.getThread();
 	    jJezzThread.doStart();
