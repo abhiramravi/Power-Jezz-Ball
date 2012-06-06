@@ -9,9 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 public class Ball
 {
@@ -67,12 +66,12 @@ public class Ball
 			// initial random location for the ball
 			
 			
-			currentX = rand.nextInt(100);
-			currentY = rand.nextInt(100);
-
+			currentX = getRandomInteger(0, GameParameters.getScreenWidth() - (int)Math.ceil(GameParameters.getBallWidth()),rand);
+			currentY = getRandomInteger(0, GameParameters.getScreenHeight() - (int)Math.ceil(GameParameters.getBallHeight()),rand);
+			//Log.d(Integer.toString(GameParameters.getScreenWidth()), Integer.toString(GameParameters.getScreenHeight()));
 			// start with a little random motion
 			
-			int randDegrees = rand.nextInt(10);
+			int randDegrees = rand.nextInt(100);
 
 			velocityY = Math.cos(randDegrees) * GameParameters.PHYS_VEL;
 			velocityX = Math.sin(randDegrees) * GameParameters.PHYS_VEL;
@@ -278,6 +277,17 @@ public class Ball
 		}
 		return null;
 	}
+	private static int getRandomInteger(int aStart, int aEnd, Random aRandom){
+	    if ( aStart > aEnd ) {
+	      throw new IllegalArgumentException("Start cannot exceed End.");
+	    }
+	    //get the range, casting to long to avoid overflow problems
+	    long range = (long)aEnd - (long)aStart + 1;
+	    // compute a fraction of the range, 0 <= frac < range
+	    long fraction = (long)(range * aRandom.nextDouble());
+	    int randomNumber =  (int)(fraction + aStart);    
+	    return randomNumber;
+	  }
 	/*---------------------------------------------------*/
 	/*			OUTER ACCESS FUNCTIONS					 */
 	/*---------------------------------------------------*/

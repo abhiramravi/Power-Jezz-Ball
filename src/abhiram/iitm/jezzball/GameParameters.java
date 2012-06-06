@@ -21,7 +21,7 @@ public class GameParameters
 	/*
 	 * Physics constants
 	 */
-	public static final int PHYS_VEL = 100;
+	public static final int PHYS_VEL = 130;
 	public static final int LINE_VEL = 150;
 	/*
 	 * State-tracking constants
@@ -31,7 +31,7 @@ public class GameParameters
 	public static final int STATE_READY = 3;
 	public static final int STATE_RUNNING = 4;
 	public static final int STATE_WIN = 5;
-	public static int LIVES = 5;
+	public static int LIVES = 10;
 	
 	public static final int LINE_STROKE_WIDTH = 10;
 	
@@ -61,7 +61,7 @@ public class GameParameters
 	
 
 	public static Ball[] jezzBalls;
-	private static int numberOfBalls = 6;
+	private static int numberOfBalls = 4;
 	
 	/** Currently only one line TODO: Allow multiple lines */
 	public static ArrayList<Line> line = new ArrayList<Line>();

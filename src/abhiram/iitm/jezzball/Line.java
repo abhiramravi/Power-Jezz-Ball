@@ -94,7 +94,7 @@ public class Line
 			screenHeight = jSurfaceHolder.getSurfaceFrame().height();
 			
 			p = new Paint();
-			p.setColor(Color.GRAY);
+			p.setColor(Color.DKGRAY);
 			p.setStrokeWidth(GameParameters.LINE_STROKE_WIDTH);
 			
 			q = new Paint();
