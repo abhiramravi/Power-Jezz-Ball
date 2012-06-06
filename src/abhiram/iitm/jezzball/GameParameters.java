@@ -205,7 +205,11 @@ public class GameParameters
 	}
 	public static void updateResultsInUi()
 	{
-		conquered.setText("Conquered : "+getAreaConquered()/getScreenArea()*100 +"%");
+		float percent = getAreaConquered()/getScreenArea()*100;
+		
+		conquered.setText("Conquered : "+ (int)percent +"%");
+		lives.setText("Lives : "+LIVES);
+		
 		
 	}
 }

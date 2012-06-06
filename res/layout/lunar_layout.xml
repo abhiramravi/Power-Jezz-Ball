@@ -30,32 +30,38 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:background="#88F2D680"
             android:text="Level : 1"
             android:textColor="#88000000"
             android:textSize="14sp"
             android:typeface="sans"
             android:visibility="visible" />
+
         <TextView
             android:id="@+id/rightbottomtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:background="#88F2D680"
             android:text="Conquered : "
             android:textColor="#88000000"
             android:textSize="14sp"
             android:typeface="sans"
             android:visibility="visible" />
+
         <TextView
             android:id="@+id/centerbottomtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="#88F2D680"
             android:text="Lives : "
             android:textColor="#88000000"
             android:textSize="14sp"
             android:typeface="sans"
-            android:visibility="visible" android:layout_centerInParent="true"/>
+            android:visibility="visible" />
     </RelativeLayout>
 
 </FrameLayout>
