@@ -31,6 +31,7 @@ public class GameParameters
 	public static final int STATE_READY = 3;
 	public static final int STATE_RUNNING = 4;
 	public static final int STATE_WIN = 5;
+	public static int LIVES = 5;
 	
 	public static final int LINE_STROKE_WIDTH = 10;
 	

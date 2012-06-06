@@ -153,11 +153,16 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 
 		private void updatePhysics()
 		{
+			if(GameParameters.LIVES <= 0)
+			{
+				color = Color.RED;
+			}
 			if(GameParameters.getAreaConquered()/GameParameters.getScreenArea() > 0.75)
 			{
-				color = Color.CYAN;
+				color = Color.GREEN;
 				Log.d("WIN!", Float.toString(GameParameters.getAreaConquered()) + " " + Float.toString(GameParameters.getScreenArea()));
 			}
+			
 			synchronized(GameParameters.lock)
 			{
 				

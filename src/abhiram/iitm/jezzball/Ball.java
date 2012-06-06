@@ -114,6 +114,7 @@ public class Ball
 				if(!hl.isThisLineIsFixed())
 				{
 					GameParameters.clearRecentLine();
+					GameParameters.LIVES--;
 				}
 			}
 			if( vl == null )
@@ -126,6 +127,7 @@ public class Ball
 				if(!vl.isThisLineIsFixed())
 				{
 					GameParameters.clearRecentLine();
+					GameParameters.LIVES--;
 				}
 			}
 
