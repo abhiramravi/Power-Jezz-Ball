@@ -3,6 +3,7 @@ package abhiram.iitm.jezzball;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
+import android.widget.TextView;
 
 public class GameParameters
 {
@@ -45,6 +46,11 @@ public class GameParameters
 	
 	private static int screenArea;
 	private static float areaConquered;
+	
+	public static TextView center;
+	public static TextView level;
+	public static TextView lives;
+	public static TextView conquered;
 	
 	public static void resetAreaConquered()
 	{
@@ -196,5 +202,10 @@ public class GameParameters
 			}
 		}
 		return true;
+	}
+	public static void updateResultsInUi()
+	{
+		conquered.setText("Conquered : "+getAreaConquered()/getScreenArea()*100 +"%");
+		
 	}
 }

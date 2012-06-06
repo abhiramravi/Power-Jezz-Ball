@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -115,6 +116,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 					if (c != null)
 					{
 						jSurfaceHolder.unlockCanvasAndPost(c);
+						GFX.mHandler.post(GFX.mUpdateResults);
 					}
 				}
 			}

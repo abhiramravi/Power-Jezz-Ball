@@ -10,11 +10,31 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.TextView;
 
 public class GFX extends Activity implements OnTouchListener
 {
 	JezzThread jJezzThread;
 	JezzView jView;
+	// Need handler for callbacks to the UI thread
+    public static final Handler mHandler = new Handler();
+
+    public Handler getmHandler()
+	{
+		return mHandler;
+	}
+	public Runnable getmUpdateResults()
+	{
+		return mUpdateResults;
+	}
+
+
+	// Create runnable for posting
+    public static final Runnable mUpdateResults = new Runnable() {
+        public void run() {
+            GameParameters.updateResultsInUi();
+        }
+    };
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -22,6 +42,12 @@ public class GFX extends Activity implements OnTouchListener
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.lunar_layout);
 	    jView = (JezzView) findViewById(R.id.jezzball);
+	    
+	    GameParameters.center = (TextView) findViewById(R.id.centertext);
+	    GameParameters.level = (TextView) findViewById(R.id.leftbottomtext);
+	    GameParameters.lives = (TextView) findViewById(R.id.centerbottomtext);
+	    GameParameters.conquered = (TextView) findViewById(R.id.rightbottomtext);
+	    
 	    jView.setOnTouchListener(this);
 	    jJezzThread = jView.getThread();
 	    jJezzThread.doStart();
