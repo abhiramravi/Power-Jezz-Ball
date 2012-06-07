@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import abhiram.iitm.jezzball.JezzView.JezzThread;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -57,15 +59,38 @@ public class GFX extends Activity implements OnTouchListener
      */
     @Override
     protected void onPause() {
+    	jJezzThread.interrupt();
         super.onPause();
-        jView.getThread().pause(); // pause game when Activity pauses
+        
     }
 	@Override
 	protected void onResume() 
 	{
 		super.onResume();
-		//jView.getThread().unpause();
 	}
+	@Override
+	public void onBackPressed() 
+	{
+		jJezzThread.pause();
+		AlertDialog alert = new AlertDialog.Builder(GFX.this).create();
+		alert.setTitle("Game Paused");
+		alert.setButton("Resume", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				jJezzThread.unpause();
+			}
+		});
+		alert.setButton2("Quit", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{}
+		});
+		alert.show();
+	}
+	
 	
 	
 	float startX, startY, endX, endY;
@@ -119,6 +144,5 @@ public class GFX extends Activity implements OnTouchListener
         jJezzThread.saveState(outState);
         Log.w(this.getClass().getName(), "SIS called");
     }
-	
 
 }

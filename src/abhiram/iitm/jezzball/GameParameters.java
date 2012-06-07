@@ -2,6 +2,8 @@ package abhiram.iitm.jezzball;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.widget.TextView;
 
@@ -11,7 +13,7 @@ public class GameParameters
 	public static final Object lock = new Object();
 	
 	private static boolean userAction;
-	
+	public static int CURRENT_LEVEL = 1;
 	/*
 	 * Difficulty setting constants
 	 */
@@ -22,8 +24,8 @@ public class GameParameters
 	/*
 	 * Physics constants
 	 */
-	public static final int PHYS_VEL = 130;
-	public static final int LINE_VEL = 150;
+	public static int PHYS_VEL = 130;
+	public static int LINE_VEL = 150;
 	/*
 	 * State-tracking constants
 	 */
@@ -209,12 +211,45 @@ public class GameParameters
 		
 		conquered.setText("Conquered : "+ (int)percent +"%");
 		lives.setText("Lives : "+LIVES);
+		level.setText("Level : "+CURRENT_LEVEL);
 		
 		
 	}
 	public static void setParametersForLevel(int i)
 	{
-		// TODO Auto-generated method stub
+		switch(i)
+		{
+		case 1: PHYS_VEL = 130; LINE_VEL = 150; numberOfBalls = 2; LIVES = 1; CURRENT_LEVEL = 1;
+			break;
+
+		case 2:PHYS_VEL = 130; LINE_VEL = 150; numberOfBalls = 3;LIVES = 2;CURRENT_LEVEL = 2;
+			break;
+		case 3:PHYS_VEL = 140; LINE_VEL = 151; numberOfBalls = 3;LIVES = 2;CURRENT_LEVEL = 3;
+			break;
+		case 4:PHYS_VEL = 130; LINE_VEL = 152; numberOfBalls = 4;LIVES = 2;CURRENT_LEVEL = 4;
+			break;
+		case 5:PHYS_VEL = 140; LINE_VEL = 153; numberOfBalls = 4;LIVES = 2;CURRENT_LEVEL = 5;
+			break;
+		case 6:PHYS_VEL = 140; LINE_VEL = 154; numberOfBalls = 5;LIVES = 3;CURRENT_LEVEL = 6;
+			break;
+		case 7:PHYS_VEL = 150; LINE_VEL = 155; numberOfBalls = 5;LIVES = 3;CURRENT_LEVEL = 7;
+			break;
+		case 8:PHYS_VEL = 150; LINE_VEL = 156; numberOfBalls = 6;LIVES = 3;CURRENT_LEVEL = 8;
+			break;
+		case 9:PHYS_VEL = 160; LINE_VEL = 157; numberOfBalls = 6;LIVES = 3;CURRENT_LEVEL = 9;
+			break;
+		case 10:PHYS_VEL = 160; LINE_VEL = 158; numberOfBalls = 7;LIVES = 4;CURRENT_LEVEL = 10;
+			break;
+		case 11:PHYS_VEL = 170; LINE_VEL = 159; numberOfBalls = 7;LIVES = 4;CURRENT_LEVEL = 11;
+			break;
+		case 12:PHYS_VEL = 170; LINE_VEL = 160; numberOfBalls = 8;LIVES = 4;CURRENT_LEVEL = 12;
+			break;
+		case 13:PHYS_VEL = 180; LINE_VEL = 161; numberOfBalls = 8;LIVES = 4;CURRENT_LEVEL = 13;
+			break;
+		case 14:PHYS_VEL = 130; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 14;
+			break;
+		default:PHYS_VEL = 130; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 1;
+		}
 		
 	}
 }

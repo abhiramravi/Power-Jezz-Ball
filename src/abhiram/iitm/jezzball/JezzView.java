@@ -145,11 +145,12 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			if(GameParameters.LIVES <= 0)
 			{
 				color = Color.rgb(230, 100, 74);
+				jMode = GameParameters.STATE_LOSE;
 			}
 			if(GameParameters.getAreaConquered()/GameParameters.getScreenArea() > 0.75)
 			{
 				color = Color.rgb(127, 190, 108);
-				Log.d("WIN!", Float.toString(GameParameters.getAreaConquered()) + " " + Float.toString(GameParameters.getScreenArea()));
+				jMode = GameParameters.STATE_WIN;
 			}
 			
 			synchronized(GameParameters.lock)
@@ -188,7 +189,22 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			synchronized (jSurfaceHolder)
 			{
 				if (jMode == GameParameters.STATE_RUNNING)
+				{
 					setState(GameParameters.STATE_PAUSE);
+					
+				}
+			}
+		}
+
+		private void resetTimeForAll()
+		{
+			for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
+			{
+				GameParameters.jezzBalls[i].resetTime();
+			}
+			for(int i = 0; i < GameParameters.linesOnScreen; i++)
+			{
+				GameParameters.line.get(i).resetTime();
 			}
 		}
 
@@ -219,7 +235,9 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		 */
 		public void unpause()
 		{
+			resetTimeForAll();
 			setState(GameParameters.STATE_RUNNING);
+			
 		}
 		/**
 		 * Dump game state to the provided Bundle. Typically called when the

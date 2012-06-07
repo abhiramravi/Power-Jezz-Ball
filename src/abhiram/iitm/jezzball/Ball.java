@@ -291,6 +291,10 @@ public class Ball
 	/*---------------------------------------------------*/
 	/*			OUTER ACCESS FUNCTIONS					 */
 	/*---------------------------------------------------*/
+	public void resetTime()
+	{
+		jLastTime = System.currentTimeMillis();
+	}
 	public void negateVelocity(boolean x)
 	{
 		if(x) this.velocityX *= -1;

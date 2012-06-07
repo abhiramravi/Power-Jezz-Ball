@@ -700,6 +700,10 @@ public class Line
 	{
 		return this.colorBottom;
 	}
+	public void resetTime()
+	{
+		jLastTime = System.currentTimeMillis();
+	}
 }
 class Rectangle
 {
