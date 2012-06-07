@@ -76,7 +76,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			
 			//TODO : Must make this change based on level of game
 			numberOfBalls = GameParameters.getNumberOfBalls();
-			color = Color.WHITE;
+			
 
 		}
 
@@ -87,7 +87,25 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			synchronized (jSurfaceHolder)
 			{
+				// waiting for the surface to be created
+				GameParameters.setScreenWidth(jSurfaceHolder.getSurfaceFrame().width());
+				GameParameters.setScreenHeight(jSurfaceHolder.getSurfaceFrame().height());
+				GameParameters.setScreenArea(GameParameters.getScreenHeight() * GameParameters.getScreenWidth());
+				Log.d(Integer.toString(jSurfaceHolder.getSurfaceFrame().width()), Integer.toString(jSurfaceHolder.getSurfaceFrame().height()));
 				
+				//Initializing the jezzballs
+				GameParameters.jezzBalls = new Ball[GameParameters.getNumberOfBalls()];
+				// register our interest in hearing about changes to our surface
+				for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
+				{
+					GameParameters.jezzBalls[i] = new Ball(jSurfaceHolder, jContext, new Handler());
+					GameParameters.jezzBalls[i].doStart();
+				}
+				
+				color = Color.WHITE;
+				
+				
+				GameParameters.resetAreaConquered();
 				setState(GameParameters.STATE_RUNNING);
 			}
 		}
@@ -116,6 +134,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 					{
 						jSurfaceHolder.unlockCanvasAndPost(c);
 						GFX.mHandler.post(GFX.mUpdateResults);
+						GFX.mHandler.post(GFX.jWinOrLose);
 					}
 				}
 			}
@@ -132,7 +151,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					GameParameters.line.get(i).doDraw(canvas);
 				}
-				for(int i = 0; i < numberOfBalls; i++)
+				for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
 				{
 					GameParameters.jezzBalls[i].doDraw(canvas);
 				}
@@ -145,12 +164,12 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 			if(GameParameters.LIVES <= 0)
 			{
 				color = Color.rgb(230, 100, 74);
-				jMode = GameParameters.STATE_LOSE;
+				setState(GameParameters.STATE_LOSE);
 			}
 			if(GameParameters.getAreaConquered()/GameParameters.getScreenArea() > 0.75)
 			{
 				color = Color.rgb(127, 190, 108);
-				jMode = GameParameters.STATE_WIN;
+				setState(GameParameters.STATE_WIN);
 			}
 			
 			synchronized(GameParameters.lock)
@@ -160,7 +179,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					GameParameters.line.get(i).updatePhysics();
 				}
-				for(int i = 0; i < numberOfBalls; i++)
+				for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
 				{
 					GameParameters.jezzBalls[i].updatePhysics();
 				}
@@ -226,6 +245,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			synchronized (jSurfaceHolder)
 			{
+				GameParameters.CURRENT_GAME_STATE = mode;
 				jMode = mode;
 			}
 		}
@@ -281,34 +301,35 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	private static Context jContext;
+	private static SurfaceHolder jHolder;
 	/** The thread that actually draws the animation */
 	private JezzThread thread;
 
 	public JezzView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-
+		jContext = context;
 		// register our interest in hearing about changes to our surface
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
 		
 		// create thread only; it's started in surfaceCreated()
-		thread = new JezzThread(holder, context, new Handler());
+		//thread = new JezzThread(holder, context, new Handler());
 
 		setFocusable(true); // make sure we get key events
 	}
 	public JezzView(Context context)
 	{
 		super(context);
-
+		jContext = context;
 		// register our interest in hearing about changes to our surface
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
 		
 		// create thread only; it's started in surfaceCreated()
-		thread = new JezzThread(holder, context, new Handler());
+		//thread = new JezzThread(holder, context, new Handler());
 
 		setFocusable(true); // make sure we get key events
 	}
@@ -322,13 +343,18 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		return thread;
 	}
-
+	public void resetThread()
+	{
+		thread = new JezzThread(jHolder, jContext, new Handler());
+		thread.start();
+		
+	}
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height)
 	{
 		holder.addCallback(this);
-
+		jHolder = holder;
 				// create thread only; it's started in surfaceCreated()
 		thread = new JezzThread(holder, jContext, new Handler());
 		thread.start();
@@ -339,21 +365,10 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		// start the thread here so that we don't busy-wait in run()
-		// waiting for the surface to be created
-		GameParameters.setScreenWidth(holder.getSurfaceFrame().width());
-		GameParameters.setScreenHeight(holder.getSurfaceFrame().height());
-		GameParameters.setScreenArea(GameParameters.getScreenHeight() * GameParameters.getScreenWidth());
-		Log.d(Integer.toString(holder.getSurfaceFrame().width()), Integer.toString(holder.getSurfaceFrame().height()));
 		
-		//Initializing the jezzballs
-		GameParameters.jezzBalls = new Ball[GameParameters.getNumberOfBalls()];
-		// register our interest in hearing about changes to our surface
-		for(int i = 0; i < GameParameters.getNumberOfBalls(); i++)
-		{
-			GameParameters.jezzBalls[i] = new Ball(holder, jContext, new Handler());
-			GameParameters.jezzBalls[i].doStart();
-		}
-		
+		thread = new JezzThread(holder, jContext, new Handler());
+		thread.doStart();
+		GFX.jJezzThread = thread;
 		thread.setRunning(true);
 		thread.start();
 

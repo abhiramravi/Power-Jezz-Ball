@@ -2,8 +2,7 @@ package abhiram.iitm.jezzball;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.TextView;
 
@@ -14,6 +13,7 @@ public class GameParameters
 	
 	private static boolean userAction;
 	public static int CURRENT_LEVEL = 1;
+	
 	/*
 	 * Difficulty setting constants
 	 */
@@ -34,6 +34,7 @@ public class GameParameters
 	public static final int STATE_READY = 3;
 	public static final int STATE_RUNNING = 4;
 	public static final int STATE_WIN = 5;
+	public static int CURRENT_GAME_STATE = STATE_READY;
 	public static int LIVES = 10;
 	
 	public static final int LINE_STROKE_WIDTH = 10;
@@ -217,6 +218,11 @@ public class GameParameters
 	}
 	public static void setParametersForLevel(int i)
 	{
+		line = new ArrayList<Line>();
+		jezzBalls = null;
+		linesFixed = 0;
+		linesOnScreen = 0;
+		CURRENT_GAME_STATE = STATE_READY;
 		switch(i)
 		{
 		case 1: PHYS_VEL = 130; LINE_VEL = 150; numberOfBalls = 2; LIVES = 1; CURRENT_LEVEL = 1;
@@ -250,6 +256,5 @@ public class GameParameters
 			break;
 		default:PHYS_VEL = 130; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 1;
 		}
-		
 	}
 }
