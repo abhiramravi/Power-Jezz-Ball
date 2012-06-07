@@ -212,4 +212,9 @@ public class GameParameters
 		
 		
 	}
+	public static void setParametersForLevel(int i)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

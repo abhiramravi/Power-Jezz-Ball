@@ -58,7 +58,7 @@ public class GFX extends Activity implements OnTouchListener
     @Override
     protected void onPause() {
         super.onPause();
-        //jView.getThread().pause(); // pause game when Activity pauses
+        jView.getThread().pause(); // pause game when Activity pauses
     }
 	@Override
 	protected void onResume() 
@@ -106,7 +106,19 @@ public class GFX extends Activity implements OnTouchListener
 		}
 		return true;
 	}
-
+	 /**
+     * Notification that something is about to happen, to give the Activity a
+     * chance to save state.
+     * 
+     * @param outState a Bundle into which this Activity should save its state
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // just have the View's thread save its state into our Bundle
+        super.onSaveInstanceState(outState);
+        jJezzThread.saveState(outState);
+        Log.w(this.getClass().getName(), "SIS called");
+    }
 	
 
 }

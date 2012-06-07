@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -31,8 +32,6 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		/** The state of the game. One of READY, RUNNING, PAUSE, LOSE, or WIN */
 		public int jMode = GameParameters.STATE_PAUSE;
 
-		public static final int INIT_X = 50;
-		public static final int INIT_Y = 50;
 
 
 		/** Indicate whether the surface has been created & is ready to draw */
@@ -221,6 +220,45 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 		public void unpause()
 		{
 			setState(GameParameters.STATE_RUNNING);
+		}
+		/**
+		 * Dump game state to the provided Bundle. Typically called when the
+		 * Activity is being suspended.
+		 * 
+		 * @return Bundle with this view's state
+		 */
+		public Bundle saveState(Bundle map)
+		{
+			synchronized (jSurfaceHolder)
+			{
+				if (map != null)
+				{
+					//map.putInt(KEY_DIFFICULTY, Integer.valueOf(mDifficulty));
+					//map.putDouble(KEY_X, Double.valueOf(mX));
+					///map.putSomething(keyname(can be anything), actual value)
+					//do this for all variables required
+					
+				}
+			}
+			return map;
+		}
+		/**
+		 * Restores game state from the indicated Bundle. Typically called when
+		 * the Activity is being restored after having been previously
+		 * destroyed.
+		 * 
+		 * @param savedState
+		 *            Bundle containing the game state
+		 */
+		public synchronized void restoreState(Bundle savedState)
+		{
+			synchronized (jSurfaceHolder)
+			{
+				//TODO
+
+				//mDifficulty = savedState.getInt(KEY_DIFFICULTY);
+				
+			}
 		}
 	}
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgd"
+    android:orientation="vertical" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vertical_secroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/muoncon" />
+
+            <Button
+                android:id="@+id/start"
+                android:layout_width="150sp"
+                android:layout_height="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4sp"
+                android:background="@drawable/custombutton"
+                android:text="START"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/resume"
+                android:layout_width="150sp"
+                android:layout_height="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4sp"
+                android:background="@drawable/custombutton"
+                android:text="RESUME"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/about"
+                android:layout_width="150sp"
+                android:layout_height="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4sp"
+                android:background="@drawable/custombutton"
+                android:text="ABOUT"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/highscores"
+                android:layout_width="150sp"
+                android:layout_height="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4sp"
+                android:background="@drawable/custombutton"
+                android:text="HIGH SCORES"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/quit"
+                android:layout_width="150sp"
+                android:layout_height="50sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4sp"
+                android:background="@drawable/custombutton"
+                android:text="QUIT"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:typeface="sans" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
