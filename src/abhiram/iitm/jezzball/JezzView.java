@@ -82,6 +82,7 @@ public class JezzView extends SurfaceView implements SurfaceHolder.Callback
 
 		/**
 		 * Starts the game, setting parameters for the current difficulty.
+		 * NOTE : DO NOT EVER CALL THIS FUNCTION UNTIL THE SURFACE HAS BEEN CREATED _ WILL RESULT IN CRASH 
 		 */
 		public void doStart()
 		{

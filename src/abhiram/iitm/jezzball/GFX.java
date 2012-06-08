@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +22,9 @@ public class GFX extends Activity implements OnTouchListener
 	
 	/** The static JezzView that is used as the base surface view for the canvas */
 	static JezzView jView;
+	
+	public static SharedPreferences prefs;
+	public static SharedPreferences.Editor editor;
 	
 	//Alert Dialogs for respective alerting NOTE: Using same static alert boxes and setting different buttons at different times does not work.
 	public static AlertDialog losealert;
@@ -63,6 +68,10 @@ public class GFX extends Activity implements OnTouchListener
 	    /* Getting the JezzView from the layout */
 	    jView = (JezzView) findViewById(R.id.jezzball);
 	    
+	    /* Setting up the shared preferences */
+	    prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+	    editor =  prefs.edit();
+	    
 	    /* Setting the textviews for score display */
 	    GameParameters.center = (TextView) findViewById(R.id.centertext);
 	    GameParameters.level = (TextView) findViewById(R.id.leftbottomtext);
@@ -85,6 +94,9 @@ public class GFX extends Activity implements OnTouchListener
      */
     @Override
     protected void onPause() {
+    	
+    	jJezzThread.pause();
+    	/*
     	boolean retry = true;
 		jJezzThread.setRunning(false);
 		while (retry)
@@ -97,13 +109,14 @@ public class GFX extends Activity implements OnTouchListener
 			{
 			}
 		}
-        super.onPause();
+        super.onPause();*/
         
     }
     /** No idea when this is invoked */
 	@Override
 	protected void onResume() 
 	{
+		if(jJezzThread != null) jJezzThread.unpause();
 		super.onResume();
 	}
 	/** Invoked when the back button is pressed 
@@ -130,6 +143,8 @@ public class GFX extends Activity implements OnTouchListener
 			public void onClick(DialogInterface dialog, int which)
 			{ 
 				//TODO : Save all the data of current game
+				GameParameters.MUST_RESTORE = true;
+				
 				startActivity(new Intent(GFX.this, JezzBallActivity.class));
 			}
 		});
@@ -142,16 +157,23 @@ public class GFX extends Activity implements OnTouchListener
 		if(state == GameParameters.STATE_WIN)
 		{
 			losealert.setTitle("You Win!");
+			losealert.setMessage("Level "+GameParameters.CURRENT_LEVEL + " crossed!");
 			losealert.setButton("Next Level", new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
+					if(GameParameters.CURRENT_LEVEL + 1 > prefs.getInt("levelReached", 1))
+					{	
+						editor.putInt("levelReached", GameParameters.CURRENT_LEVEL + 1);
+						editor.commit();
+					}
+					Log.d("Level Reached", Integer.toString(GameParameters.CURRENT_LEVEL + 1));
 					GameParameters.setParametersForLevel(GameParameters.CURRENT_LEVEL + 1);
 					jJezzThread.doStart();
 				}
 			});
-			losealert.setButton2("Quit", new DialogInterface.OnClickListener()
+			losealert.setButton2("Play again", new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which)
@@ -173,15 +195,6 @@ public class GFX extends Activity implements OnTouchListener
 					
 					GameParameters.setParametersForLevel(GameParameters.CURRENT_LEVEL);
 					jJezzThread.doStart();
-				}
-			});
-			winalert.setButton2("Quit", new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{ 
-					//TODO : Save all the data of current game
-					//startActivity(new Intent(GFX.this, JezzBallActivity.class));
 				}
 			});
 			winalert.show();

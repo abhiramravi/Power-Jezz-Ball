@@ -69,7 +69,8 @@
                 android:text="HIGH SCORES"
                 android:textColor="#000"
                 android:textSize="20sp"
-                android:typeface="sans" />
+                android:typeface="sans"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/quit"

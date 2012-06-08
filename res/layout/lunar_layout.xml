@@ -23,7 +23,7 @@
             android:textColor="#88000000"
             android:textSize="14sp"
             android:typeface="sans"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -3,19 +3,21 @@ package abhiram.iitm.jezzball;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 public class LevelChooser extends ListActivity
 {
+	public static int levelReached;
 	MyLevelAdapter customAdapter;
 	public static String levelChosen;
 	public static String[] levels = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
@@ -27,6 +29,9 @@ public class LevelChooser extends ListActivity
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.levelchooser);
 	    
+	    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+	    levelReached = prefs.getInt("levelReached", 1);
+	    Log.d("Level Reached Chooser", Integer.toString(levelReached));
 	    levelChosen = "null";
 	    getListView().setDividerHeight(0);
 	    getListView().setFadingEdgeLength(10);
@@ -110,7 +115,10 @@ class MyLevelAdapter extends ArrayAdapter<String>
 				LevelChooser.levelChosen = Integer.toString(i);
 			}
 		});
-
+		if(LevelChooser.levelReached < position + 1)
+		{
+			row.setVisibility(View.INVISIBLE);
+		}
 		return row;
 	}
 	

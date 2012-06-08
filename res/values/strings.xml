@@ -2,6 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, JezzBallActivity!</string>
-    <string name="app_name">JezzBall</string>
-
+    <string name="app_name">u-Con</string>
+    <string name="instructions"> First place your finger at the point that you want the energy ray to begin from . Move your finger in the direction that you want the energy to travel in. Finally release your finger to start the trigger the energy ray in both directions. If the energy is hit by a muon before it can stabilize itself with the walls of the Mu-Con, then the energy ray is lost along with one life. If the energy ray successfully stabilizes, then if any of the partitions created by the ray is void of muons, then that partition is conquered. In order to successfully complete a level, the muons in that level must be restricted to an area 25% of the initial container area. In successive levels, the number of muons and/or their speed will continue to increase and pose a challenge to containment</string>
+	<string name="story">Will be updated soon</string>
 </resources>

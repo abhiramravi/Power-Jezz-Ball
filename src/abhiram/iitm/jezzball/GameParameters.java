@@ -14,6 +14,7 @@ public class GameParameters
 	private static boolean userAction;
 	public static int CURRENT_LEVEL = 1;
 	
+	public static boolean MUST_RESTORE = false;
 	/*
 	 * Difficulty setting constants
 	 */
@@ -218,6 +219,7 @@ public class GameParameters
 	}
 	public static void setParametersForLevel(int i)
 	{
+		MUST_RESTORE = false;
 		line = new ArrayList<Line>();
 		jezzBalls = null;
 		linesFixed = 0;
@@ -252,8 +254,20 @@ public class GameParameters
 			break;
 		case 13:PHYS_VEL = 180; LINE_VEL = 161; numberOfBalls = 8;LIVES = 4;CURRENT_LEVEL = 13;
 			break;
-		case 14:PHYS_VEL = 130; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 14;
+		case 14:PHYS_VEL = 190; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 14;
 			break;
+		case 15:PHYS_VEL = 200; LINE_VEL = 200; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 15;
+		break;
+		case 16:PHYS_VEL = 210; LINE_VEL = 210; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 16;
+		break;
+		case 17:PHYS_VEL = 240; LINE_VEL = 240; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 17;
+		break;
+		case 18:PHYS_VEL = 260; LINE_VEL = 260; numberOfBalls = 10;LIVES = 9;CURRENT_LEVEL = 18;
+		break;
+		case 19:PHYS_VEL = 290; LINE_VEL = 290; numberOfBalls = 10;LIVES = 10;CURRENT_LEVEL = 19;
+		break;
+		case 20:PHYS_VEL = 310; LINE_VEL = 300; numberOfBalls = 10;LIVES = 12;CURRENT_LEVEL = 20;
+		break;
 		default:PHYS_VEL = 130; LINE_VEL = 162; numberOfBalls = 9;LIVES = 9;CURRENT_LEVEL = 1;
 		}
 	}
