@@ -129,6 +129,7 @@ public class Line
 			canvas.drawLine(currentLeftX, currentLeftY, currentRightX, currentRightY, p);
 			
 			//coloring the rectangles if required - note that this is done in every cycle 
+			
 			if(colorTop)
 			{
 				float maxX = Math.max(partitionTop.x1, partitionTop.x2);
